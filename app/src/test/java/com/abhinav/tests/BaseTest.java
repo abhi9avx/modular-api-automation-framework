@@ -6,6 +6,6 @@ public class BaseTest {
 
     @BeforeSuite
     public void setup() {
-        System.out.println("Test framework initialized...");
+        System.out.println("=== Test Suite Started ===");
     }
 }
