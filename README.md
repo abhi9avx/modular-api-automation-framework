@@ -136,3 +136,122 @@ This is a critical section for your interviews. Be ready to explain *where* thes
 
 **Q8: How do you manage secrets (API Keys, Passwords)?**
 > **Answer**: In a local setup, they might be in `application.properties`. In a CI/CD pipeline (Jenkins/GitHub Actions), we pass them as **Environment Variables** (`System.getenv("API_KEY")`) so they are never hardcoded in the git repository.
+
+### 🔹 Advanced RestAssured
+**Q9: What is the difference between RequestSpecification and ResponseSpecification?**
+> **Answer**:
+> *   **RequestSpecification**: Is an interface to specify how the request will look like. It allows grouping common path parameters, headers, and authentication to prevent redundancy.
+> *   **ResponseSpecification**: Is an interface to define how a response must look like. Used to check common expectations (e.g., Status Code 200, Content-Type JSON) across multiple tests.
+
+**Q10: How do Filters work in RestAssured?**
+> **Answer**: Filters allow you to intercept and modify requests/responses before they are sent or received.
+> *   **Usage**: Logging request/response details, custom authentication schemes, or error handling.
+> *   **Common Implementation**: `RequestLoggingFilter` and `ResponseLoggingFilter` are widely used to print logs to the console or file.
+
+**Q11: Explain Serialization and Deserialization in the context of this framework.**
+> **Answer**:
+> *   **Serialization (POJO -> JSON)**: Converting a Java Object (DTO) into a JSON string to be sent as the Request Body. Handled by Jackson's `ObjectMapper`.
+> *   **Deserialization (JSON -> POJO)**: Converting the received JSON Response Body back into a Java Object (DTO) for easy assertion and validation.
+
+**Q12: How would you perform JSON Schema Validation?**
+> **Answer**: RestAssured integrates with the `json-schema-validator` module.
+> *   We store the `.json` schema file in `src/test/resources`.
+> *   In the test verification phase, we use `.body(matchesJsonSchemaInClasspath("schema.json"))` to ensure the response structure matches strict type definitions.
+
+**Q13: How do you handle multiple Content-Types (e.g., Multipart, Form-UrlEncoded)?**
+> **Answer**:
+> *   **JSON**: `.contentType(ContentType.JSON)` with `.body(pojo)`.
+> *   **Form-UrlEncoded**: `.contentType(ContentType.URLENC)` with `.formParam("key", "value")`.
+> *   **Multipart (File Upload)**: `.multiPart("file", new File("path"))`. The framework's Client layer can be extended to accept a generic Object and detect the type.
+
+### 🔹 Advanced TestNG & Execution
+**Q14: What constitutes a "Flaky" test and how do you handle it?**
+> **Answer**: A flaky test passes/fails inconsistently without code changes.
+> *   **Causes**: Network latency, data synchronization issues, or shared state.
+> *   **Solution**:
+>     1.  Use `IRetryAnalyzer` in TestNG to automatically retry failed tests.
+>     2.  Ensure tests are isolated (clean data setup/teardown).
+>     3.  Avoid hardcoded delays (`Thread.sleep`); use Awaitility or polling.
+
+**Q15: What is the role of Listeners in TestNG?**
+> **Answer**: Listeners allow customizing TestNG's behavior. The most common is `ITestListener`.
+> *   **Use Case**: Taking screenshots on failure, logging start/end of tests, or integrated with Allure Reports to attach logs when `onTestFailure` is triggered.
+
+**Q16: Hard Assert vs Soft Assert?**
+> **Answer**:
+> *   **Hard Assert** (`Assert.assertEquals`): Stops the test execution immediately upon failure. Used when checking critical values (e.g., Status Code).
+> *   **Soft Assert** (`SoftAssert`): Records the error but continues execution. Checked at the end via `.assertAll()`. Used for validating multiple fields in a large JSON body.
+
+**Q17: How does `ThreadLocal` help in Parallel Execution?**
+> **Answer**: `ThreadLocal` creates a separate instance of a variable for each thread.
+> *   **Framework Usage**: If we were to store the `ExtentReport` test instance or a shared `WebDriver` (in UI automation), `ThreadLocal` ensures that Thread A doesn't over-write or read Thread B's data during parallel execution.
+
+**Q18: How do you pass dynamic data to tests?**
+> **Answer**: Using `@DataProvider`.
+> *   It returns an `Object[][]` or `Iterator<Object[]>`.
+> *   Linked to a test via `@Test(dataProvider = "name")`.
+> *   Useful for testing the same endpoint with valid, invalid, and boundary value inputs.
+
+### 🔹 Framework Architecture & Best Practices
+**Q19: Explain the Single Responsibility Principle (SRP) in this framework.**
+> **Answer**:
+> *   **Controller**: Only constructs requests.
+> *   **Client**: Only executes HTTP calls.
+> *   **Tests**: Only validate results.
+> *   **DTO**: Only holds data.
+> *   **Config**: Only manages properties.
+> *   No class does "too much", making it easy to debug and maintain.
+
+**Q20: Why use Lombok? Are there downsides?**
+> **Answer**:
+> *   **Pros**: drastically reduces boilerplate (Getters, Setters, Builders, toString). Keeps POJOs clean.
+> *   **Cons**: Requires IDE plugin. Can hide complexity (e.g., `@Data` generates all getters/setters/equals/hashCode, which might impact performance for massive objects or JPA entities if not careful).
+
+**Q21: How do you handle Environment Switching (QA/Stage/Prod)?**
+> **Answer**:
+> *   We use a configuration loader (`EnvironmentConfig`).
+> *   It reads a system property `-Denv=qa` passed from Gradle.
+> *   Based on the string, it loads the corresponding `application-qa.properties` file to set Base URLs and Credentials.
+
+**Q22: Use of Java Streams in API Testing?**
+> **Answer**: Streams are powerful for filtering Response collections.
+> *   *Example*: Verify that all users in the list have `active: true`.
+> *   `List<User> users = response.as(User[].class);`
+> *   `boolean allActive = Arrays.stream(users).allMatch(User::isActive);`
+
+**Q23: How would you debug an issue where the API request works in Postman but fails in the Framework?**
+> **Answer**:
+> 1.  Enable full logging: `given().log().all()`.
+> 2.  Compare the printed **cURL** or Headers/Body strictly with Postman's console.
+> 3.  Check for concealed headers like `User-Agent` or hidden characters in the URL.
+> 4.  Verify SSL handshake (sometimes certificates are ignored in Postman but required in Java).
+
+**Q24: Why use a customized `ApiClient` wrapper instead of `RestAssured.given()` directly in tests?**
+> **Answer**:
+> *   **Reusability**: If we need to add a default Header (e.g., Auth Token) to EVERY request, we do it in one place (`ApiClient`).
+> *   **Decoupling**: If we switch from RestAssured to HTTPClient in the future, we only rewrite the `ApiClient`, not hundreds of tests.
+
+**Q25: What is the difference between `@BeforeTest`, `@BeforeClass`, and `@BeforeMethod`?**
+> **Answer**:
+> *   `@BeforeSuite`: Runs once before the entire suite (Global setup).
+> *   `@BeforeTest`: Runs before the `<test>` tag in `testng.xml`.
+> *   `@BeforeClass`: Runs once before the first test method in the current class.
+> *   `@BeforeMethod`: Runs before **each** `@Test` method (e.g., resetting data).
+
+**Q26: How do you integrate this with Jenkins/CI?**
+> **Answer**:
+> *   We create a specific "Job" or "Pipeline" in Jenkins.
+> *   The pipeline pulls the code from Git.
+> *   Executes `./gradlew test -Denv=qa`.
+> *   Uses the **Allure Plugin** for Jenkins to visualize the generated `allure-results` folder.
+
+**Q27: How do you handle negative scenarios?**
+> **Answer**: By creating negative Tests (e.g., `CreateUser_InvalidEmail`).
+> *   We expect a specific Error Status Code (400 Bad Request).
+> *   We validate the **Error Message** in the response body using a specific `ErrorResponse` DTO.
+
+**Q28: What is Dependency Injection and where could it be used here?**
+> **Answer**:
+> *   Currently, we may instance `UserController` directly.
+> *   With **Dependency Injection (DI)** (like Guice or Spring), we would let the framework manage the lifecycle of the Controllers and Clients.
+> *   This creates looser coupling and makes unit testing individual components (mocking) easier.
