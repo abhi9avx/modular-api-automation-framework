@@ -58,7 +58,59 @@ The framework completely decouples the **Test Layer** (Validation) from the **Lo
 
 ---
 
-## 📂 Project Structure & Deep Dive
+## � Getting Started
+
+### Prerequisites
+Before running the project, ensure you have the following installed:
+*   **Java JDK 17+**: Verify with `java -version`
+*   **Gradle**: (Optional, as we use the Gradle Wrapper included)
+
+### 📥 Installation
+1.  **Fork** the repository (Top right corner on GitHub).
+2.  **Clone** your forked repository:
+    ```bash
+    git clone https://github.com/YOUR_USERNAME/modular-api-automation-framework.git
+    cd modular-api-automation-framework
+    ```
+
+### 🏃‍♂️ How to Run
+This project uses the **Gradle Wrapper**, so you don't need to manually install Gradle.
+
+#### 1. Build the Project
+Downloads dependencies and compiles the code.
+```bash
+./gradlew clean build -x test
+```
+
+#### 2. Run All Tests
+Executes all tests configured in `src/test/resources/testng.xml`.
+```bash
+./gradlew clean test
+```
+
+#### 3. Run Specific Tests
+To run a specific test class:
+```bash
+./gradlew clean test --tests "com.abhinav.tests.CreateUserApiTest"
+```
+
+#### 4. Run on Different Environments
+You can switch environments (QA, DEV) using the system property `-Denv`.
+```bash
+./gradlew clean test -Denv=qa   # Runs on QA environment
+./gradlew clean test -Denv=dev  # Runs on DEV environment
+```
+
+#### 5. Generate & View Allure Reports
+After execution, generate a local Allure web report to visualize results.
+```bash
+./gradlew allureServe
+```
+*(Note: Press `Ctrl + C` to stop the server)*
+
+---
+
+## �📂 Project Structure & Deep Dive
 This project follows a strict **Layered Modular Architecture**. Each package has a specific responsibility.
 
 ```text
