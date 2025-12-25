@@ -4,6 +4,7 @@ import com.abhinav.framework.config.EnvironmentConfig;
 import io.restassured.RestAssured;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import io.qameta.allure.*;
 
 public class GetUserApiTest {
 
@@ -14,9 +15,9 @@ public class GetUserApiTest {
 
         int statusCode = RestAssured
                 .given()
-                .baseUri(baseUrl + "/users/2")
+                .baseUri(baseUrl)
                 .when()
-                .get()
+                .get("/users/2")
                 .getStatusCode();
 
         Assert.assertEquals(statusCode, 200);
