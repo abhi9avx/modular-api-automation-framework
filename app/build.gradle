@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.abhinav'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    // TestNG for test execution
+    testImplementation 'org.testng:testng:7.7.1'
+
+    // REST Assured for API testing
+    testImplementation 'io.rest-assured:rest-assured:5.3.0'
+
+    // JSON parsing
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
+
+    // Logging
+    implementation 'org.slf4j:slf4j-simple:2.0.9'
+}
+
+test {
+    useTestNG()
+}
