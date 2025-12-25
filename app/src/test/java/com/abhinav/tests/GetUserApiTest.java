@@ -1,22 +1,23 @@
 package com.abhinav.tests;
 
+import com.abhinav.framework.config.EnvironmentConfig;
 import io.restassured.RestAssured;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class GetUserApiTest extends BaseTest {
+public class GetUserApiTest {
 
     @Test
     public void getUserDetails() {
 
+        String baseUrl = EnvironmentConfig.getBaseUrl();
+
         int statusCode = RestAssured
                 .given()
-                .baseUri("https://jsonplaceholder.typicode.com/users/1")
+                .baseUri(baseUrl + "/users/2")
                 .when()
                 .get()
-                .then()
-                .extract()
-                .statusCode();
+                .getStatusCode();
 
         Assert.assertEquals(statusCode, 200);
     }
