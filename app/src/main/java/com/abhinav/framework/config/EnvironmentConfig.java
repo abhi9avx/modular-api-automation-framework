@@ -5,23 +5,21 @@ import java.util.Properties;
 
 public class EnvironmentConfig {
 
-    private static final Properties properties = new Properties();
+  private static final Properties properties = new Properties();
 
-    static {
-        try (InputStream input =
-                     EnvironmentConfig.class
-                             .getClassLoader()
-                             .getResourceAsStream("application.properties")) {
+  static {
+    try (InputStream input =
+        EnvironmentConfig.class.getClassLoader().getResourceAsStream("application.properties")) {
 
-            properties.load(input);
+      properties.load(input);
 
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to load environment configuration", e);
-        }
+    } catch (Exception e) {
+      throw new RuntimeException("Failed to load environment configuration", e);
     }
+  }
 
-    public static String getBaseUrl() {
-        String env = System.getProperty("env", properties.getProperty("env"));
-        return properties.getProperty(env + ".base.url");
-    }
+  public static String getBaseUrl() {
+    String env = System.getProperty("env", properties.getProperty("env"));
+    return properties.getProperty(env + ".base.url");
+  }
 }
