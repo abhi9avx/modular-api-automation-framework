@@ -6,6 +6,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/*
+ * -----------------------------------------------------------------------------
+ * File: PostResponse.java
+ * Purpose: DTO for mapping the API JSON response for Post operations.
+ *
+ * Why:
+ * - Allows type-safe assertions on the response data (e.g., asserting 'id' is generated).
+ * - Ignores unknown fields to keep tests resilient to minor API changes.
+ * -----------------------------------------------------------------------------
+ */
 @Data
 @Builder
 @NoArgsConstructor

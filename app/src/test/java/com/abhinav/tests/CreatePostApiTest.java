@@ -13,6 +13,22 @@ import org.slf4j.Logger;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+/*
+ * -----------------------------------------------------------------------------
+ * File: CreatePostApiTest.java
+ * Purpose: Test class for verifying "Create Post" API functionality.
+ *
+ * Why:
+ * - Ensures that the API can successfully create new resources (Posts).
+ * - Validates that the response matches the request data.
+ *
+ * Summary:
+ * 1. Prepares test data using RandomUtil and TestUser Enum.
+ * 2. Sends a POST request via PostController.
+ * 3. Validates status code (201 Created).
+ * 4. Deserializes response to PostResponse DTO and asserts field values.
+ * -----------------------------------------------------------------------------
+ */
 @Epic("Post Management")
 @Feature("Create Post")
 public class CreatePostApiTest extends BaseTest {
@@ -26,28 +42,29 @@ public class CreatePostApiTest extends BaseTest {
   public void verifyCreatePost() {
     log.info("Starting Create Post Test...");
 
-    // Prepare Request Data using DTO, Enum, and Utils
+    // 1. Prepare Request Data: Use random strings to ensure uniqueness
     String title = RandomUtil.generateRandomString("Title");
     String body = RandomUtil.generateRandomString("Body");
-    int userId = TestUser.ADMIN_USER.getId(); // Using Enum
+    int userId = TestUser.ADMIN_USER.getId(); // Use Enum for consistent User ID
 
+    // Build the request DTO using Lombok Builder
     PostRequest postRequest = PostRequest.builder().title(title).body(body).userId(userId).build();
 
     log.info("Request Body: " + JsonUtil.toJson(postRequest));
 
-    // Execute API Call using Controller
+    // 2. Execute API Call: Delegate execution to Controller
     Response response = postController.createPost(postRequest);
 
-    // Validate Response Status
+    // 3. Validate Status: Expecting 201 Created
     log.info("Validating Response Status Code...");
     Assert.assertEquals(response.getStatusCode(), 201, "Status code mismatch!");
 
-    // Parse Response to DTO
+    // 4. Validate Response Body: Deserialize JSON -> Java Object
     String responseBody = response.getBody().asString();
     log.info("Response Body: " + responseBody);
     PostResponse createdPost = JsonUtil.fromJson(responseBody, PostResponse.class);
 
-    // Assertions
+    // Assertions: Verify response data matches request data
     Assert.assertNotNull(createdPost.getId(), "Post ID should be generated");
     Assert.assertEquals(createdPost.getTitle(), title, "Title mismatch");
     Assert.assertEquals(createdPost.getBody(), body, "Body mismatch");

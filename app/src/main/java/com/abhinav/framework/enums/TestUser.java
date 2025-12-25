@@ -1,5 +1,15 @@
 package com.abhinav.framework.enums;
 
+/*
+ * -----------------------------------------------------------------------------
+ * File: TestUser.java
+ * Purpose: Enum defining predefined Test Users and their IDs.
+ *
+ * Why:
+ * - Keeps User IDs consistent across tests.
+ * - `TestUser.ADMIN_USER.getId()` is more readable than `1`.
+ * -----------------------------------------------------------------------------
+ */
 public enum TestUser {
   ADMIN_USER(1, "Admin User"),
   REGULAR_USER(2, "Regular User"),
