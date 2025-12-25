@@ -1,0 +1,13 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="API Automation Suite" parallel="tests" thread-count="3">
+
+    <test name="User API Tests">
+        <classes>
+            <class name="com.abhinav.tests.GetUserApiTest"/>
+            <class name="com.abhinav.tests.CreateUserApiTest"/>
+            <class name="com.abhinav.tests.CreatePostApiTest"/>
+        </classes>
+    </test>
+
+</suite>
