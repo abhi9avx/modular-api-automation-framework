@@ -56,3 +56,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: build/reports/allure-report/allureReport
           publish_branch: gh-pages
+
+      - name: Report Link
+        if: always()
+        run: echo "Allure Report is available at https://abhi9avx.github.io/modular-api-automation-framework/"
