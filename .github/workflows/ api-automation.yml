@@ -1,0 +1,33 @@
+name: API Automation Tests   # Workflow name (shown in GitHub UI)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:         # Manual trigger
+
+jobs:
+  api-test:                  # Job name
+    runs-on: ubuntu-latest   # VM provided by GitHub
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Grant execute permission to Gradle
+        run: chmod +x gradlew
+
+      - name: Build Project
+        run: ./gradlew build
+
+      - name: Run Tests
+        run: ./gradlew clean test
+
+     
