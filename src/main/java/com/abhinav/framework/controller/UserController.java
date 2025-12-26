@@ -22,15 +22,15 @@ import java.util.Map;
  */
 public class UserController {
 
-    // Constructs the URL for a specific user and calls the generic GET method
-    public Response getUserById(int userId) {
-        String url = EnvironmentConfig.getBaseUrl() + "/users/" + userId;
-        return ApiClient.get(url, Map.of());
-    }
+  // Constructs the URL for a specific user and calls the generic GET method
+  public Response getUserById(int userId) {
+    String url = EnvironmentConfig.getBaseUrl() + "/users/" + userId;
+    return ApiClient.get(url, Map.of());
+  }
 
-    // Constructs URL for creating a user and calls the generic POST method
-    public Response createUser(Object userRequest) {
-        String url = EnvironmentConfig.getBaseUrl() + "/users";
-        return ApiClient.post(url, userRequest, Map.of("Content-Type", "application/json"));
-    }
+  // Constructs URL for creating a user and calls the generic POST method
+  public Response createUser(Object userRequest) {
+    String url = EnvironmentConfig.getBaseUrl() + "/users";
+    return ApiClient.post(url, userRequest, Map.of("Content-Type", "application/json"));
+  }
 }

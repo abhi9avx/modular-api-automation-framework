@@ -31,47 +31,47 @@ import java.util.Properties;
  */
 public class EnvironmentConfig {
 
-    // Properties object to hold key-value pairs from the config file
-    private static final Properties properties = new Properties();
+  // Properties object to hold key-value pairs from the config file
+  private static final Properties properties = new Properties();
 
-    /*
-     * Static Block:
-     * This block runs ONLY ONCE when the class is loaded into memory.
-     * We use this to load the `application.properties` file from the
-     * `src/main/resources` folder.
-     */
-    static {
-        try (InputStream input = EnvironmentConfig.class.getClassLoader()
-                .getResourceAsStream("application.properties")) {
-            // Check if file exists, if so, load it into the properties object
-            if (input == null) {
-                throw new RuntimeException("Sorry, unable to find application.properties");
-            }
-            properties.load(input);
-        } catch (Exception e) {
-            // Throw a runtime exception if something goes wrong during loading (e.g., file
-            // not found)
-            throw new RuntimeException("Failed to load environment configuration", e);
-        }
+  /*
+   * Static Block:
+   * This block runs ONLY ONCE when the class is loaded into memory.
+   * We use this to load the `application.properties` file from the
+   * `src/main/resources` folder.
+   */
+  static {
+    try (InputStream input =
+        EnvironmentConfig.class.getClassLoader().getResourceAsStream("application.properties")) {
+      // Check if file exists, if so, load it into the properties object
+      if (input == null) {
+        throw new RuntimeException("Sorry, unable to find application.properties");
+      }
+      properties.load(input);
+    } catch (Exception e) {
+      // Throw a runtime exception if something goes wrong during loading (e.g., file
+      // not found)
+      throw new RuntimeException("Failed to load environment configuration", e);
     }
+  }
 
-    /*
-     * Method: getBaseUrl
-     * Purpose: Retrieve the base URL based on the current active environment.
-     *
-     * Logic:
-     * 1. Check if the user passed an environment via command line (e.g.,
-     * -Denv=dev).
-     * 2. If not, fallback to the default 'env' defined in application.properties.
-     * 3. Use that environment key (e.g., 'qa') to look up the specific URL (e.g.,
-     * 'qa.base.url').
-     */
-    public static String getBaseUrl() {
-        // Step 1: Get the current environment (defaulting to value in file if not
-        // provided)
-        String env = System.getProperty("env", properties.getProperty("env"));
+  /*
+   * Method: getBaseUrl
+   * Purpose: Retrieve the base URL based on the current active environment.
+   *
+   * Logic:
+   * 1. Check if the user passed an environment via command line (e.g.,
+   * -Denv=dev).
+   * 2. If not, fallback to the default 'env' defined in application.properties.
+   * 3. Use that environment key (e.g., 'qa') to look up the specific URL (e.g.,
+   * 'qa.base.url').
+   */
+  public static String getBaseUrl() {
+    // Step 1: Get the current environment (defaulting to value in file if not
+    // provided)
+    String env = System.getProperty("env", properties.getProperty("env"));
 
-        // Step 2: Return the specific URL for that environment
-        return properties.getProperty(env + ".base.url");
-    }
+    // Step 2: Return the specific URL for that environment
+    return properties.getProperty(env + ".base.url");
+  }
 }

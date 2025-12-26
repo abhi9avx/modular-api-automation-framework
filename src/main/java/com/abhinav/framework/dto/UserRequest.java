@@ -31,17 +31,17 @@ import lombok.NoArgsConstructor;
  * ---------------------------------------------------------------------------------------------------------------------
  */
 @Data // Generates Getters, Setters, toString, equals, and hashCode methods
-      // automatically
+// automatically
 @Builder // Allows us to create objects using the builder pattern:
-         // UserRequest.builder().name("John").build()
+// UserRequest.builder().name("John").build()
 @NoArgsConstructor // Generates a constructor with no arguments (required by Jackson for JSON
-                   // deserialization)
+// deserialization)
 @AllArgsConstructor // Generates a constructor with all arguments
 public class UserRequest {
 
-    // Field mapping to JSON key "name"
-    private String name;
+  // Field mapping to JSON key "name"
+  private String name;
 
-    // Field mapping to JSON key "job"
-    private String job;
+  // Field mapping to JSON key "job"
+  private String job;
 }

@@ -20,13 +20,13 @@ import org.testng.annotations.Listeners;
  * - @BeforeSuite: Runs once before any test in the suite starts.
  * -----------------------------------------------------------------------------
  */
-@Listeners({ AllureTestNg.class })
+@Listeners({AllureTestNg.class})
 public class BaseTest {
 
-    protected static final Logger log = LoggerUtil.getLogger(BaseTest.class);
+  protected static final Logger log = LoggerUtil.getLogger(BaseTest.class);
 
-    @BeforeSuite
-    public void setupSuite() {
-        log.info("=== Test Suite Execution Started ===");
-    }
+  @BeforeSuite
+  public void setupSuite() {
+    log.info("=== Test Suite Execution Started ===");
+  }
 }

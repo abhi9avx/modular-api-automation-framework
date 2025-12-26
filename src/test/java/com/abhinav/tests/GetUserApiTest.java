@@ -30,34 +30,34 @@ import org.testng.annotations.Test;
 @Feature("User Management")
 public class GetUserApiTest {
 
-    private static final Logger log = LoggerUtil.getLogger(GetUserApiTest.class);
-    private final UserClient userClient = new UserClient();
+  private static final Logger log = LoggerUtil.getLogger(GetUserApiTest.class);
+  private final UserClient userClient = new UserClient();
 
-    @Test(description = "Verify GET user API returns valid user data")
-    @Severity(SeverityLevel.CRITICAL)
-    @Story("Get User By ID")
-    public void verifyGetUserById() {
+  @Test(description = "Verify GET user API returns valid user data")
+  @Severity(SeverityLevel.CRITICAL)
+  @Story("Get User By ID")
+  public void verifyGetUserById() {
 
-        log.info("Starting GET User API Test");
+    log.info("Starting GET User API Test");
 
-        // 1. Call API: Fetch user with ID 2
-        Response response = userClient.getUserById(2);
+    // 1. Call API: Fetch user with ID 2
+    Response response = userClient.getUserById(2);
 
-        // 2. Validate Status: Expect 200 OK
-        log.info("Validating response status code");
-        Assert.assertEquals(response.getStatusCode(), 200);
+    // 2. Validate Status: Expect 200 OK
+    log.info("Validating response status code");
+    Assert.assertEquals(response.getStatusCode(), 200);
 
-        // 3. Parse Response
-        String responseBody = response.getBody().asString();
-        log.info("Response Body: {}", responseBody);
+    // 3. Parse Response
+    String responseBody = response.getBody().asString();
+    log.info("Response Body: {}", responseBody);
 
-        // 4. Convert JSON to Object
-        UserResponse user = JsonUtil.fromJson(responseBody, UserResponse.class);
+    // 4. Convert JSON to Object
+    UserResponse user = JsonUtil.fromJson(responseBody, UserResponse.class);
 
-        // 5. Assertions: Check data integrity
-        Assert.assertNotNull(user.getId(), "User ID should not be null");
-        Assert.assertNotNull(user.getEmail(), "Email should not be null");
+    // 5. Assertions: Check data integrity
+    Assert.assertNotNull(user.getId(), "User ID should not be null");
+    Assert.assertNotNull(user.getEmail(), "Email should not be null");
 
-        log.info("Test Passed Successfully");
-    }
+    log.info("Test Passed Successfully");
+  }
 }

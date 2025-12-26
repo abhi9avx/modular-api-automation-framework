@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostRequest {
-    private String title;
-    private String body;
-    private int userId;
+  private String title;
+  private String body;
+  private int userId;
 }

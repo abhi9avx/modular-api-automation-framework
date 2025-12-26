@@ -1,10 +1,10 @@
 package com.abhinav.framework.dto;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /*
  * ---------------------------------------------------------------------------------------------------------------------
@@ -35,25 +35,26 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @NoArgsConstructor // Required for Jackson
 @AllArgsConstructor // Convenience constructor
 @Builder // Builder pattern support
-@JsonIgnoreProperties(ignoreUnknown = true) // Crucial: Tells Jackson to ignore any JSON fields not defined below
-                                            // (prevents "UnrecognizedPropertyException")
+@JsonIgnoreProperties(
+    ignoreUnknown = true) // Crucial: Tells Jackson to ignore any JSON fields not defined below
+// (prevents "UnrecognizedPropertyException")
 public class UserResponse {
 
-    // Unique ID returned by the API
-    private int id;
+  // Unique ID returned by the API
+  private int id;
 
-    // Name of the user
-    private String name;
+  // Name of the user
+  private String name;
 
-    // Username (if applicable)
-    private String username;
+  // Username (if applicable)
+  private String username;
 
-    // Email (if applicable)
-    private String email;
+  // Email (if applicable)
+  private String email;
 
-    // Job title (returned by Create User API)
-    private String job;
+  // Job title (returned by Create User API)
+  private String job;
 
-    // Timestamp of creation (returned by Create User API)
-    private String createdAt;
+  // Timestamp of creation (returned by Create User API)
+  private String createdAt;
 }

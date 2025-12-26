@@ -23,23 +23,23 @@ import java.util.Map;
  */
 public class ApiClient {
 
-    // Generic GET request
-    public static Response get(String url, Map<String, String> headers) {
-        return RestAssured.given().headers(headers).when().get(url);
-    }
+  // Generic GET request
+  public static Response get(String url, Map<String, String> headers) {
+    return RestAssured.given().headers(headers).when().get(url);
+  }
 
-    // Generic POST request with body
-    public static Response post(String url, Object body, Map<String, String> headers) {
-        return RestAssured.given().headers(headers).body(body).when().post(url);
-    }
+  // Generic POST request with body
+  public static Response post(String url, Object body, Map<String, String> headers) {
+    return RestAssured.given().headers(headers).body(body).when().post(url);
+  }
 
-    // Generic PUT request for updates
-    public static Response put(String url, Object body, Map<String, String> headers) {
-        return RestAssured.given().headers(headers).body(body).when().put(url);
-    }
+  // Generic PUT request for updates
+  public static Response put(String url, Object body, Map<String, String> headers) {
+    return RestAssured.given().headers(headers).body(body).when().put(url);
+  }
 
-    // Generic DELETE request
-    public static Response delete(String url, Map<String, String> headers) {
-        return RestAssured.given().headers(headers).when().delete(url);
-    }
+  // Generic DELETE request
+  public static Response delete(String url, Map<String, String> headers) {
+    return RestAssured.given().headers(headers).when().delete(url);
+  }
 }

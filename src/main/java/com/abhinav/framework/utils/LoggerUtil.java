@@ -15,12 +15,12 @@ import org.slf4j.LoggerFactory;
  */
 public class LoggerUtil {
 
-    private LoggerUtil() {
-        // Prevent instantiation
-    }
+  private LoggerUtil() {
+    // Prevent instantiation
+  }
 
-    // Returns a standard Logger instance for the calling class
-    public static Logger getLogger(Class<?> clazz) {
-        return LoggerFactory.getLogger(clazz);
-    }
+  // Returns a standard Logger instance for the calling class
+  public static Logger getLogger(Class<?> clazz) {
+    return LoggerFactory.getLogger(clazz);
+  }
 }
