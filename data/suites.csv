@@ -1,0 +1,4 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Fri Dec 26 11:04:16 UTC 2025","Fri Dec 26 11:04:16 UTC 2025","151","API Automation Suite","User API Tests","com.abhinav.tests.CreatePostApiTest","com.abhinav.tests.CreatePostApiTest","verifyCreatePost","Verify successful creation of a new post",""
+"passed","Fri Dec 26 11:04:16 UTC 2025","Fri Dec 26 11:04:16 UTC 2025","184","API Automation Suite","User API Tests","com.abhinav.tests.CreateUserApiTest","com.abhinav.tests.CreateUserApiTest","verifyCreateUser","Verify successful creation of a new user",""
+"passed","Fri Dec 26 11:04:14 UTC 2025","Fri Dec 26 11:04:16 UTC 2025","2179","API Automation Suite","User API Tests","com.abhinav.tests.GetUserApiTest","com.abhinav.tests.GetUserApiTest","verifyGetUserById","Verify GET user API returns valid user data",""
