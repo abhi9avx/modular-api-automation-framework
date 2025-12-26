@@ -199,3 +199,28 @@ This document contains a curated list of interview questions and answers relevan
 > **Answer**:
 > *   Yes. We use the `if: always()` condition in the GitHub Actions steps.
 > *   This ensures that even if the `./gradlew test` step fails (exit code 1), the subsequent steps (Generate Report, Upload Artifact, Send Notification) **still run**. This is crucial for debugging *why* it failed.
+
+### 🔹 Docker & Containerization
+**Q33: Why should we dockerize our automation framework?**
+> **Answer**:
+> *   **Consistency**: "It works on my machine" is solved. Docker ensures the tests run in the exact same environment (OS, Java version, Dependencies) everywhere.
+> *   **Isolation**: No need to install Java or Gradle on the host machine (e.g., Jenkins agent). You only need Docker.
+> *   **Scalability**: Easy to spin up multiple containers to run tests in parallel on a Grid or Kubernetes.
+
+**Q34: Explain the `Dockerfile` used in this project.**
+> **Answer**:
+> *   `FROM gradle:8.5-jdk17`: Sets the base image. we start with a Linux machine that already has Gradle 8.5 and Java 17 installed.
+> *   `WORKDIR /app`: Creates a working directory inside the container and switches to it.
+> *   `COPY . .`: Copies all files from our local project folder into the container's `/app` folder.
+> *   `CMD ["./gradlew", "clean", "test"]`: The default command to run when the container starts. It executes the tests.
+
+**Q35: What is the purpose of `.dockerignore`?**
+> **Answer**:
+> *   It is similar to `.gitignore`. It tells Docker which files **NOT** to copy into the container during the build process.
+> *   **Why?**: We exclude `build/`, `.gradle/`, and `node_modules` to keep the image lightweight and prevent overwriting the container's environment with local build artifacts.
+
+**Q36: What is the difference between `CMD` and `RUN` in a Dockerfile?**
+> **Answer**:
+> *   `RUN`: Executes a command *during the build phase* (e.g., `RUN apt-get install git`). The result is committed to the image layer.
+> *   `CMD`: Specifies the command to run *when the container starts* (e.g., `./gradlew test`). It is the runtime entry point.
+

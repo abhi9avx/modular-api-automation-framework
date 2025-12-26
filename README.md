@@ -101,14 +101,27 @@ You can switch environments (QA, DEV) using the system property `-Denv`.
 ./gradlew clean test -Denv=dev  # Runs on DEV environment
 ```
 
-#### 5. Generate & View Allure Reports
+#### 5. Run with Docker 🐳
+You can run the tests inside a Docker container to ensure a consistent environment.
+
+**Build the Image:**
+```bash
+docker build -t api-automation-tests .
+```
+
+**Run the Tests:**
+```bash
+docker run --rm api-automation-tests
+```
+
+#### 6. Generate & View Allure Reports
 After execution, generate a local Allure web report to visualize results.
 ```bash
 ./gradlew allureServe
 ```
 *(Note: Press `Ctrl + C` to stop the server)*
 
-#### 6. Viewing Reports from CI (GitHub Actions)
+#### 7. Viewing Reports from CI (GitHub Actions)
 If you download the `allure-report` artifact from GitHub Actions, you **cannot** simply open `index.html` in your browser due to security restrictions.
 
 **Method 1: Use Allure CLI (Recommended)**
