@@ -224,3 +224,19 @@ This document contains a curated list of interview questions and answers relevan
 > *   `RUN`: Executes a command *during the build phase* (e.g., `RUN apt-get install git`). The result is committed to the image layer.
 > *   `CMD`: Specifies the command to run *when the container starts* (e.g., `./gradlew test`). It is the runtime entry point.
 
+**Q37: How do you integrate Docker with GitHub Actions?**
+> **Answer**:
+> *   We use a YAML workflow (like `docker-tests.yml`) that specifies `runs-on: ubuntu-latest`.
+> *   Since GitHub-hosted runners have Docker pre-installed, we can simply run `docker build` and `docker run` commands in the `steps`.
+> *   This verifies that our Docker image builds and functions correctly in a blank environment.
+
+**Q38: Why do we need `RUN chmod +x ./gradlew` in the Dockerfile?**
+> **Answer**:
+> *   When files are copied from Windows or sometimes even Mac to the Linux container, the "execution" permission might be lost.
+> *   If we don't run `chmod +x`, the container fails with "Permission denied" when trying to run `./gradlew`.
+
+**Q39: What is the difference between running tests in "CI with Gradle" vs. "CI with Docker"?**
+> **Answer**:
+> *   **CI with Gradle**: The runner (GitHub VM) uses its own installed Java/Gradle. If the runner updates Java automatically, your tests might break due to version mismatch.
+> *   **CI with Docker**: The runner only runs Docker. The tests run INSIDE the container, which has a **fixed** version of Java and Gradle (defined in `FROM gradle:8.5-jdk17`). This is more stable and reliable.
+

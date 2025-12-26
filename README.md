@@ -209,6 +209,19 @@ This is a critical section for your interviews. Be ready to explain *where* thes
 
 ---
 
+## 🚀 Docker in CI/CD (GitHub Actions)
+We have a dedicated workflow (`docker-tests.yml`) to ensure the Docker image triggers correctly in the CI pipeline.
+
+### Workflow: `Docker API Automation Tests`
+*   **Trigger**: Pushes to `main` or manual trigger (`workflow_dispatch`).
+*   **Steps**:
+    1.  **Checkout Code**: Pulls the latest code.
+    2.  **Build Image**: Executes `docker build -t api-automation-tests .`.
+    3.  **Run Tests**: Executes `docker run api-automation-tests`.
+*   **Benefit**: Verifies that the containerized version of the framework works before deployment.
+
+---
+
 ## 🔔 Telegram Notifications
 The framework sends automatic build status updates to Telegram.
 
