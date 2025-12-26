@@ -37,10 +37,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
-          path: app/build/reports/allure-report
+          path: /build/reports/allure-report
 
       - name: Upload Allure Results (Raw)
         uses: actions/upload-artifact@v4
         with:
           name: allure-results
-          path: app/build/allure-results
+          path: /build/allure-results
