@@ -108,6 +108,21 @@ After execution, generate a local Allure web report to visualize results.
 ```
 *(Note: Press `Ctrl + C` to stop the server)*
 
+#### 6. Viewing Reports from CI (GitHub Actions)
+If you download the `allure-report` artifact from GitHub Actions, you **cannot** simply open `index.html` in your browser due to security restrictions.
+
+**Method 1: Use Allure CLI (Recommended)**
+```bash
+allure open path/to/unzipped/allure-report
+```
+
+**Method 2: Use Python Simple Server**
+```bash
+cd path/to/unzipped/allure-report
+python3 -m http.server 8000
+# Open http://localhost:8000 in your browser
+```
+
 ---
 
 ## �📂 Project Structure & Deep Dive

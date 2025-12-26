@@ -10,6 +10,8 @@ on:
 jobs:
   api-test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout code
@@ -46,3 +48,11 @@ jobs:
         with:
           name: allure-results
           path: build/allure-results
+
+      - name: Publish Report to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: build/reports/allure-report
+          publish_branch: gh-pages
