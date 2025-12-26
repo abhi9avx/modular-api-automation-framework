@@ -1,15 +1,15 @@
-name: API Automation Tests   # Workflow name (shown in GitHub UI)
+name: API Automation Tests
 
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-  workflow_dispatch:         # Manual trigger
+  workflow_dispatch:
 
 jobs:
-  api-test:                  # Job name
-    runs-on: ubuntu-latest   # VM provided by GitHub
+  api-test:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
@@ -30,4 +30,17 @@ jobs:
       - name: Run Tests
         run: ./gradlew clean test
 
-     
+      - name: Generate Allure Report
+        run: ./gradlew allureReport
+
+      - name: Upload Allure Report (HTML)
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: app/build/reports/allure-report
+
+      - name: Upload Allure Results (Raw)
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: app/build/allure-results
