@@ -170,3 +170,32 @@ This document contains a curated list of interview questions and answers relevan
 > *   Currently, we may instance `UserController` directly.
 > *   With **Dependency Injection (DI)** (like Guice or Spring), we would let the framework manage the lifecycle of the Controllers and Clients.
 > *   This creates looser coupling and makes unit testing individual components (mocking) easier.
+
+### 🔹 CI/CD & Notifications (GitHub Actions)
+**Q29: Explain the workflow of GitHub Actions in this project.**
+> **Answer**:
+> 1.  **Trigger**: The workflow starts on `push` to the `main` branch.
+> 2.  **Environment**: It spins up an `ubuntu-latest` virtual machine.
+> 3.  **Setup**: Installs Java JDK 17 (using `actions/setup-java`).
+> 4.  **Execution**: Runs `./gradlew clean test` to execute the TestNG suite.
+> 5.  **Reporting**: Generates Allure reports (`./gradlew allureReport`).
+> 6.  **Artifacts**: Uploads the raw results and HTML report to GitHub Actions Artifacts storage.
+> 7.  **Publishing**: Pushes the generated HTML to the `gh-pages` branch to host the website.
+> 8.  **Notification**: Sends a Telegram message with the status and link.
+
+**Q30: Why did we need to grant specific "Write" permissions in the YAML file?**
+> **Answer**:
+> *   By default, the `GITHUB_TOKEN` is often Read-Only for security.
+> *   To **publish** to GitHub Pages, the workflow needs to **push** code (the HTML files) to the `gh-pages` branch.
+> *   We added `permissions: contents: write` to authorize this action.
+
+**Q31: How does the Telegram Bot integration work securely?**
+> **Answer**:
+> *   We do **not** hardcode the Bot Token in the code.
+> *   We use **GitHub Secrets** (`secrets.TELEGRAM_BOT_TOKEN`).
+> *   In the workflow YAML, we access these secrets securely (`${{ secrets... }}`) and pass them to a `curl` command that hits the Telegram Bot API (`/sendMessage`).
+
+**Q32: What happens if the tests fail? Does the report still generate?**
+> **Answer**:
+> *   Yes. We use the `if: always()` condition in the GitHub Actions steps.
+> *   This ensures that even if the `./gradlew test` step fails (exit code 1), the subsequent steps (Generate Report, Upload Artifact, Send Notification) **still run**. This is crucial for debugging *why* it failed.

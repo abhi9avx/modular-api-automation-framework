@@ -196,7 +196,18 @@ This is a critical section for your interviews. Be ready to explain *where* thes
 
 ---
 
+## 🔔 Telegram Notifications
+The framework sends automatic build status updates to Telegram.
+
+### Setup Secrets
+To enable this, add the following to **Settings > Secrets and variables > Actions**:
+1. `TELEGRAM_BOT_TOKEN`: Your Bot Token (from BotFather).
+2. `TELEGRAM_CHAT_ID`: The User or Channel ID to receive messages.
+
+---
+
 ## 🎓 Interview Prep
+
 For a deep dive into potential Interview Questions & Answers related to this framework, check out:
 👉 **[INTERVIEW_QA.md](./INTERVIEW_QA.md)**
 
