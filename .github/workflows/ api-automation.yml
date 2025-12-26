@@ -64,7 +64,21 @@ jobs:
       - name: Send Telegram Notification
         if: always()
         run: |
-          curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
-            -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
+          # Debug: Assert secrets exist (without printing them)
+          if [ -z "${{ secrets.TELEGRAM_BOT_TOKEN }}" ]; then
+            echo "::error::TELEGRAM_BOT_TOKEN secret is EMPTY!"
+            exit 1
+          else
+            echo "Bot Token is set (Starts with: $(echo '${{ secrets.TELEGRAM_BOT_TOKEN }}' | head -c 4)...)"
+          fi
+          
+          if [ -z "${{ secrets.TELEGRAM_CHAT_ID }}" ]; then
+            echo "::error::TELEGRAM_CHAT_ID secret is EMPTY!"
+            exit 1
+          fi
+
+          # Safe Execution
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
             -d parse_mode=Markdown \
             -d text="*Build Finished!* %0A*Status*: ${{ job.status }} %0A*Report*: [View Allure Report](https://abhi9avx.github.io/modular-api-automation-framework/)"
