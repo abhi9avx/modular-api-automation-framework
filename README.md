@@ -173,11 +173,15 @@ Our pipeline is automated via **GitHub Actions** for every push and Pull Request
 
 ---
 
-## 🔮 Roadmap
-- [ ] **GraphQL Support**
-- [ ] **Consumer Driven Contract Testing (Pact)**
-- [ ] **Kubernetes Test Runners**
-- [ ] **Performance Testing (Gatling/JMeter)**
+## 🔮 Roadmap & Evolution
+
+We are constantly evolving! Here are the next milestones for this framework:
+
+*   [ ] **🤝 Contract Testing**: Integrating **Pact** for consumer-driven contract (CDC) validation.
+*   [ ] **🧠 AI Self-Healing via Gemini**: Utilizing **Google Gemini AI** to automatically analyze and suggest fixes for failed tests.
+*   [ ] **📊 Enhanced Data-Driven**: Adding support for **CSV/Excel** data injection for bulk scenario testing.
+*   [ ] **🛡️ Security Layer**: Basic security scanning (OWASP ZAP) integration for API vulnerability checks.
+*   [ ] **⚡ Performance Injection**: Lightweight load testing using **k6** directly within the CI pipeline.
 
 ---
 
