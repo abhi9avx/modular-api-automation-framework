@@ -1,6 +1,10 @@
 # 🚀 Modular API Automation Framework
 
 <p align="center">
+  <img src="assets/framework_hero.png" alt="Modular API Framework Hero" width="800">
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/Java-17-orange?style=for-the-badge&logo=java" alt="Java 17">
   <img src="https://img.shields.io/badge/RestAssured-5.3-purple?style=for-the-badge&logo=postman" alt="RestAssured">
   <img src="https://img.shields.io/badge/Allure-Report-green?style=for-the-badge&logo=qameta" alt="Allure">
@@ -108,11 +112,12 @@ sequenceDiagram
 
 ---
 
-## 📂 Project Visual Map
+## 📂 Project Structure
 
 ```text
 modular-api-automation-framework
 ├── .github/workflows     # 🤖 CI/CD Pipelines (Docker, API Tests)
+├── assets/               # 🖼️ Brand assets & Hero images
 ├── src/main/java
 │   └── com.abhinav
 │       ├── client        # 🔌 Wraps RestAssured (Get, Post, Put)
@@ -128,96 +133,58 @@ modular-api-automation-framework
 
 ---
 
-## 🏃‍♂️ How to Run & Use
+## 🏃‍♂️ Getting Started
 
 ### 1️⃣ Prerequisites
 *   Java JDK 17+
-*   Docker (Optional)
+*   Docker (Recommended)
 
-### 2️⃣ Quick Start
-Clone the repo and run the tests:
+### 2️⃣ Running Tests
 ```bash
-# Run all tests
+# Run all tests in default environment
 ./gradlew clean test
 
-# Run specific environment
+# Run tests in specific environment (qa, dev, prod)
 ./gradlew clean test -Denv=qa
 ```
 
-### 3️⃣ Run with Docker
-Isolate your environment and run anywhere:
+### 3️⃣ Docker Support
 ```bash
+# Build & Run with Docker
 docker build -t api-tests .
 docker run --rm api-tests
 ```
 
-### 4️⃣ Generate Reports
-View the results in a browser:
+### 4️⃣ Reporting
 ```bash
+# Generate and open Allure report
 ./gradlew allureServe
 ```
 
 ---
 
-## 🤖 CI/CD Evolution (GitHub Actions)
+## 🤖 CI/CD & DevOps Integration
 
-We automate our testing lifecycle using **GitHub Actions**.
+Our pipeline is automated via **GitHub Actions** for every push and Pull Request.
 
-### 🔄 Pipelines
-1.  **API Automation**: Triggers on push. Runs tests, generates Allure report, and deploys to GitHub Pages.
-2.  **Docker Validation**: Builds and runs the container to ensure portability.
-
-### 🔔 Notifications
-The pipeline sends a **Telegram Message** on completion with:
-*   ✅ Build Status (Success/Failure)
-*   🔗 Link to the Allure Report
-*   ⏱ Execution Time
-
-*(Configure `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` in repo settings to enable)*
+*   **Automation**: Runs the full suite on every commit.
+*   **Reports**: Automatically deploys Allure Reports to **GitHub Pages**.
+*   **Notifications**: Instant **Telegram Alerts** with build status and report links.
 
 ---
 
-## 🔮 Roadmap & Upcoming Features
-
-We are constantly improving! Here is what's coming next:
-*   [ ] **GraphQL Support**: Native testing support for GraphQL endpoints.
-*   [ ] **Contract Testing**: Integration with Pact for consumer-driven contracts.
-*   [ ] **Kubernetes Support**: Helm charts for deploying test runners in K8s clusters.
-*   [ ] **Performance Testing**: Gatling/JMeter integration for load testing.
-
----
-
-## 🤝 How to Fork & Contribute
-
-We welcome contributions! If you want to improve this framework:
-
-1.  **Fork the Repository**: Click the `Fork` button at the top right of this page.
-2.  **Clone Your Fork**:
-    ```bash
-    git clone https://github.com/abhi9avx/modular-api-automation-framework.git
-    ```
-3.  **Create a Branch**:
-    ```bash
-    git checkout -b feature/my-new-feature
-    ```
-4.  **Make Changes & Commit**:
-    ```bash
-    git commit -m "Add some amazing feature"
-    ```
-5.  **Push to GitHub**:
-    ```bash
-    git push origin feature/my-new-feature
-    ```
-6.  **Open a Pull Request**: Go to the original repository and create a Pull Request.
+## 🔮 Roadmap
+- [ ] **GraphQL Support**
+- [ ] **Consumer Driven Contract Testing (Pact)**
+- [ ] **Kubernetes Test Runners**
+- [ ] **Performance Testing (Gatling/JMeter)**
 
 ---
 
 ## 👨‍💻 Author
 
-Created and maintained by **Abhinav**  
+Created with ❤️ by **Abhinav**  
 🔗 **[GitHub Profile](https://github.com/abhi9avx)**
 
-Made with ❤️ for the SDET/QA Community.
-
-
-
+---
+*If you find this useful, don't forget to ⭐ the repository!*
