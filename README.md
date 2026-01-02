@@ -16,42 +16,42 @@
 
 ## 🌟 Overview
 
-Welcome to the **Modular API Automation Framework** — a **production-ready**, high-performance testing solution designed for scalability and speed. Built with **Java 17** and **RestAssured**, this framework completely decouples validation logic from test data, ensuring that your tests are as readable as they are robust.
+The **Modular API Automation Framework** is a **production-ready**, high-performance testing solution designed for enterprise-grade scalability and speed. Built with **Java 17** and **RestAssured**, it employs a strict separation of concerns to ensure that tests remain readable, maintainable, and robust as the system grows.
 
-Whether you're running locally, in Docker, or via CI/CD pipelines, this framework executes seamlessly, providing instant feedback through rich **Allure Reports**.
+Whether executing locally for development, within isolated **Docker** containers, or as part of a **CI/CD pipeline**, this framework provides comprehensive feedback through rich, interactive **Allure Reports**.
 
 ---
 
 ## 🎨 Stellar Features
 
-*   **🧩 Layered Architecture**: strict separation of concerns (Client, Controller, DTO, Test layers).
-*   **⚡ Parallel Execution**: Built on **TestNG** to run methods and classes concurrently for maximum speed.
-*   **📊 Type-Safe DTOs**: Uses **Lombok** and **Jackson** to map JSON payloads to Java Objects automatically.
-*   **🌍 Multi-Environment**: Switch between QA, DEV, and PROD with a single config flag `-Denv`.
-*   **🐳 Dockerized**: Zero-setup execution using the included Dockerfile.
-*   **🔔 Real-Time Alerts**: Integrated **Telegram Notifications** for CI pipeline status updates.
-*   **📝 Beautiful Reporting**: Interactive **Allure** dashboards with logs, request bodies, and pass/fail trends.
+*   **🧩 Layered Architecture**: Strict decoupling of Client, Controller, DTO, and Test layers.
+*   **⚡ Parallel Execution**: Optimized via **TestNG** to run suites and methods concurrently.
+*   **📊 Type-Safe DTOs**: Automated JSON mapping using **Lombok** and **Jackson**.
+*   **🌍 Multi-Environment Management**: Switch contexts (QA, DEV, PROD) instantly via the `-Denv` flag.
+*   **🐳 Containerized Workflow**: Zero-setup execution with a fully optimized Dockerfile.
+*   **🔔 Intelligent Alerts**: Real-time **Telegram** notifications for pipeline build status.
+*   **📝 Professional Reporting**: Interactive dashboards with request/response logs and trend analysis.
 
 ---
 
 ## 🛠️ Performance Tech Stack
 
-| Technology | Role | Description |
+| Technology | Role | Why We Use It? |
 | :--- | :--- | :--- |
-| **Java 17** | Core Language | Robust, typed, and object-oriented foundation. |
-| **RestAssured** | API Client | DSL for cleaner, powerful HTTP requests (BDD style). |
-| **TestNG** | Test Runner | Handles assertions, parallel execution, and suites. |
-| **Jackson** | Json Processor | High-performance serialization/deserialization. |
-| **Lombok** | Code Cleaner | Eliminates boilerplate (getters, setters, builders). |
-| **Allure** | Reporting | Visualizes test results with rich metadata. |
-| **Gradle** | Build Tool | Fast, incremental builds and dependency management. |
-| **GitHub Actions** | CI/CD | Automates testing on every push/PR. |
+| **Java 17** | Core Engine | Long-term support, performance, and type safety. |
+| **RestAssured** | API Client | Fluent, human-readable DSL for complex HTTP assertions. |
+| **TestNG** | Test Runner | Superior parallel execution and flexible test configuration. |
+| **Jackson** | JSON Processor | The industry standard for high-performance serialization. |
+| **Lombok** | Boilerplate Killer | Keeps DTOs clean by automating getters, setters, and builders. |
+| **Allure** | Reporting | Provides executive-level visual insights into test health. |
+| **Gradle** | Build Tool | Fast incremental builds and modern dependency management. |
+| **GitHub Actions** | CI/CD | Seamless automation of the testing lifecycle. |
 
 ---
 
-## 🏗️ Core Architecture & Design Patterns
+## �️ Core Architecture & Design Patterns
 
-We use a **Low Level Design (LLD)** focused on modularity to ensure the framework stays maintainable as it scales.
+The framework is designed using **Low-Level Design (LLD)** principles to ensure maximum modularity and reusability.
 
 ### 🏛 High-Level Design (HLD)
 
@@ -63,25 +63,25 @@ graph TD
     end
     
     subgraph "Logic & Control Layer"
-        Controller[Controllers]
+        Controller[Controllers / Managers]
     end
     
     subgraph "Core Engine Layer"
-        Client[API Client]
-        Config[Config Manager]
-        Utils[Utilities]
+        Client[Base API Client]
+        Config[Environment Config]
+        Utils[Utility Helpers]
     end
     
     subgraph "Data Layer"
-        DTO[POJOs / DTOs]
+        DTO[POJOs / Data Transfer Objects]
     end
     
     TestNG -->|Triggers| Test
-    Test -->|Calls| Controller
+    Test -->|Invokes| Controller
     Controller -->|Uses| Client
     Controller -->|Builds| DTO
-    Client -->|Reads| Config
-    Client -->|Sends| API[External API]
+    Client -->|Loads| Config
+    Client -->|Executes| API[External Web Services]
     API -->|Response| Client
 ```
 
@@ -95,81 +95,95 @@ sequenceDiagram
     participant API as External Service
     
     Test->>Controller: createUser(UserRequest)
-    Controller->>Client: post(endpoint, body)
-    Client->>Client: Add Headers & Auth
-    Client->>API: HTTP POST /users
-    API-->>Client: 200 OK (JSON)
-    Client-->>Controller: Return Response
-    Controller-->>Test: Return UserResponse POJO
-    Test->>Test: Assertions (ID, Name, Status)
+    Controller->>Client: post("/users", body)
+    Client->>Client: Inject Headers & Auth
+    Client->>API: HTTP POST 
+    API-->>Client: 201 Created (JSON)
+    Client-->>Controller: Return Raw Response
+    Controller-->>Test: Map to UserResponse Object
+    Test->>Test: Assert Status & Data Integrity
 ```
 
-### 🧩 Design Patterns Implementation
-*   **Builder Pattern**: Used in DTOs (`UserRequest.builder().name("Neo").build()`) for clear object construction.
-*   **Singleton Pattern**: Ensures `EnvironmentConfig` is loaded once and accessible globally.
-*   **Facade Pattern**: Controllers act as a facade, hiding the complexity of HTTP calls from the tests.
-*   **POJO Integration**: strict mapping of JSON <-> Java Objects to avoid string manipulation.
+### 🧩 Design Patterns Implemented
+*   **Facade Pattern**: Controllers hide the complexity of HTTP handling from the test scripts.
+*   **Singleton Pattern**: Manages a single instance of `EnvironmentConfig` across the framework.
+*   **Builder Pattern**: Utilized in DTOs for readable and concise object creation.
+*   **Factory Pattern**: Dynamically creates request specifications based on the environment.
 
 ---
 
-## 📂 Project Structure
+## 📂 Project Structure Map
 
 ```text
 modular-api-automation-framework
-├── .github/workflows     # 🤖 CI/CD Pipelines (Docker, API Tests)
-├── assets/               # 🖼️ Brand assets & Hero images
+├── .github/workflows     # 🤖 CI/CD Pipelines (Automated Testing & Deployment)
+├── assets/               # 🖼️ High-res brand assets and project visuals
 ├── src/main/java
 │   └── com.abhinav
-│       ├── client        # 🔌 Wraps RestAssured (Get, Post, Put)
-│       ├── config        # ⚙️ Env variables (QA/DEV/PROD)
-│       ├── controller    # 🎮 Business Logic & Endpoints
-│       ├── dto           # 📦 POJOs (Request/Response Objects)
-│       └── utils         # 🛠 Helpers (Faker, String manip)
-├── src/test/java         # 🧪 Test Scripts (Validation Layer)
-├── Dockerfile            # 🐳 Container configuration
-├── build.gradle          # 🐘 Dependencies & Plugins
-└── testng.xml            # 🚦 Test Suite Configuration
+│       ├── client        # 🔌 Core RestAssured wrapper
+│       ├── config        # ⚙️ Environment and Global properties
+│       ├── controller    # 🎮 Business logic & endpoint abstractions
+│       ├── dto           # 📦 Type-safe Request/Response objects
+│       └── utils         # 🛠 Utilities (Fakers, Logging, Parsers)
+├── src/test/java         # 🧪 Test suites and validation logic
+├── Dockerfile            # 🐳 Containerization config
+├── build.gradle          # 🐘 Build configuration and dependencies
+└── testng.xml            # 🚦 Test execution suites
 ```
 
 ---
 
-## 🏃‍♂️ Getting Started
+## 🏃‍♂️ Setup & Execution
 
 ### 1️⃣ Prerequisites
-*   Java JDK 17+
-*   Docker (Recommended)
+- **Java JDK 17** or higher.
+- **Gradle 8.x** (Included in wrapper).
+- **Docker** (Optional, for containerized runs).
 
-### 2️⃣ Running Tests
+### 2️⃣ Running Tests Locally
 ```bash
-# Run all tests in default environment
+# Execute all tests in the default environment
 ./gradlew clean test
 
-# Run tests in specific environment (qa, dev, prod)
+# Execute tests in a specific environment
 ./gradlew clean test -Denv=qa
 ```
 
-### 3️⃣ Docker Support
+### 3️⃣ Docker Execution
 ```bash
-# Build & Run with Docker
-docker build -t api-tests .
-docker run --rm api-tests
+# Build the image
+docker build -t api-framework .
+
+# Run the suite in a container
+docker run --rm api-framework
 ```
 
-### 4️⃣ Reporting
+### 4️⃣ Visualizing Results
 ```bash
-# Generate and open Allure report
+# Generate and serve Allure reports
 ./gradlew allureServe
 ```
 
 ---
 
-## 🤖 CI/CD & DevOps Integration
+## 🤖 CI/CD Integration (GitHub Actions)
 
-Our pipeline is automated via **GitHub Actions** for every push and Pull Request.
+The framework is fully integrated into **GitHub Actions** to automate the Quality Assurance lifecycle.
 
-*   **Automation**: Runs the full suite on every commit.
-*   **Reports**: Automatically deploys Allure Reports to **GitHub Pages**.
-*   **Notifications**: Instant **Telegram Alerts** with build status and report links.
+*   **Continuous Testing**: Automatically triggered on every `push` and `pull_request`.
+*   **Artifact Deployment**: Test reports are automatically generated and hosted on **GitHub Pages**.
+*   **Real-time Feedback**: Integrates with **Telegram Bot API** to send instant success/failure notifications to the engineering team, including a direct link to the Allure report.
+
+---
+
+## 🤝 Contribution & Forking
+
+We welcome contributions! If you'd like to enhance this framework:
+1. **Fork** the repository.
+2. Create a **Feature Branch** (`git checkout -b feature/AmazingFeature`).
+3. **Commit** your changes (`git commit -m 'Add some AmazingFeature'`).
+4. **Push** to the branch (`git push origin feature/AmazingFeature`).
+5. Open a **Pull Request**.
 
 ---
 
@@ -187,8 +201,7 @@ We are constantly evolving! Here are the next milestones for this framework:
 
 ## 👨‍💻 Author
 
-Created with ❤️ by **Abhinav**  
+Developed and maintained by **Abhinav**  
 🔗 **[GitHub Profile](https://github.com/abhi9avx)**
 
----
-*If you find this useful, don't forget to ⭐ the repository!*
+*Made with ❤️ for the SDET community. Please give a ⭐ if you find this project helpful!*
