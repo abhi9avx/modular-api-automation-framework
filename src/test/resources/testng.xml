@@ -8,6 +8,7 @@
             <class name="com.abhinav.tests.CreateUserApiTest"/>
             <class name="com.abhinav.tests.CreatePostApiTest"/>
             <class name="com.abhinav.tests.PostAPITest"/>
+            <class name="com.abhinav.tests.GetCommentTest"/>
         </classes>
     </test>
 
