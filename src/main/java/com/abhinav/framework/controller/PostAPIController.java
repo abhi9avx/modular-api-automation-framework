@@ -9,25 +9,24 @@ import io.restassured.http.ContentType;
 
 public class PostAPIController {
 
-    private static final String BASE_URL = EnvironmentConfig.getBaseUrl();
+  private static final String BASE_URL = EnvironmentConfig.getBaseUrl();
 
-    public static PostResponseDto createPost(PostRequestDto request) {
+  public static PostResponseDto createPost(PostRequestDto request) {
 
-        // GIVEN: base URI and request body
-        return RestAssured
-                .given()
-                    .baseUri(BASE_URL)
-                    .contentType(ContentType.JSON)
-                    .body(request)
+    // GIVEN: base URI and request body
+    return RestAssured.given()
+        .baseUri(BASE_URL)
+        .contentType(ContentType.JSON)
+        .body(request)
 
-                // WHEN: POST API is called
-                .when()
-                    .post(PostApi.CREATE_POST.getPath())
+        // WHEN: POST API is called
+        .when()
+        .post(PostApi.CREATE_POST.getPath())
 
-                // THEN: validate and extract response
-                .then()
-                    .statusCode(201)
-                    .extract()
-                    .as(PostResponseDto.class);
-    }
+        // THEN: validate and extract response
+        .then()
+        .statusCode(201)
+        .extract()
+        .as(PostResponseDto.class);
+  }
 }
