@@ -8,15 +8,15 @@ import org.testng.annotations.Test;
 
 public class PostAPITest {
 
-    @Test
-    public void shouldCreatePostSuccessfully() {
-        PostRequestDto requestDto = new PostRequestDto("My Test Post", "This is the body content", 1);
+  @Test
+  public void shouldCreatePostSuccessfully() {
+    PostRequestDto requestDto = new PostRequestDto("My Test Post", "This is the body content", 1);
 
-        PostResponseDto response = PostAPIController.createPost(requestDto);
+    PostResponseDto response = PostAPIController.createPost(requestDto);
 
-        Assert.assertNotNull(response.getId());
-        Assert.assertEquals(response.getTitle(), "My Test Post");
-        Assert.assertEquals(response.getBody(), "This is the body content");
-        Assert.assertEquals(response.getUserId(), Integer.valueOf(1));
-    }
+    Assert.assertNotNull(response.getId());
+    Assert.assertEquals(response.getTitle(), "My Test Post");
+    Assert.assertEquals(response.getBody(), "This is the body content");
+    Assert.assertEquals(response.getUserId(), Integer.valueOf(1));
+  }
 }

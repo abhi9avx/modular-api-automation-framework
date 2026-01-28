@@ -7,11 +7,11 @@ import lombok.*;
 @Data
 public class CommentResponseDto {
 
-    private Integer postId;
-    private Integer id;
-    private String name;
-    private String email;
-    private String body;
+  private Integer postId;
+  private Integer id;
+  private String name;
+  private String email;
+  private String body;
 }
 
 // {
