@@ -9,6 +9,8 @@
             <class name="com.abhinav.tests.CreatePostApiTest"/>
             <class name="com.abhinav.tests.GetUserTest"/>
             <class name="com.abhinav.tests.PostAPITest"/>
+            <class name="com.abhinav.tests.PostEchoTest"/>
+            <class name="com.abhinav.tests.PostOrderTest"/>
         </classes>
     </test>
 
