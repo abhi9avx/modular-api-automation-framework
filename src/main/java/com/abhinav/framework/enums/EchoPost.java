@@ -6,8 +6,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum EchoPost {
+  ECHO_POST("/echo/post/json");
 
-    ECHO_POST("/echo/post/json");
-
-    private final String path;
+  private final String path;
 }

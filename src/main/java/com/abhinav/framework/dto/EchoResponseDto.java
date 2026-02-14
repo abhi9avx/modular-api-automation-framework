@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EchoResponseDto {
-    private boolean success;
+  private boolean success;
 }

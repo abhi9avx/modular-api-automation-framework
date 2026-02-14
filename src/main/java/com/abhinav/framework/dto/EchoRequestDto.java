@@ -12,15 +12,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class EchoRequestDto {
 
-    @JsonProperty("Id")
-    private int id;
+  @JsonProperty("Id")
+  private int id;
 
-    @JsonProperty("Customer")
-    private String customer;
+  @JsonProperty("Customer")
+  private String customer;
 
-    @JsonProperty("Quantity")
-    private int quantity;
+  @JsonProperty("Quantity")
+  private int quantity;
 
-    @JsonProperty("Price")
-    private double price;
+  @JsonProperty("Price")
+  private double price;
 }
