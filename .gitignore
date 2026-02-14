@@ -53,3 +53,8 @@ Icon
 /nbdist/
 /.nb-gradle/
 INTERVIEW_QA.md
+
+# ### Allure ###
+allure-results/
+allure-report/
+test-output/
