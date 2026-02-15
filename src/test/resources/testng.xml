@@ -13,6 +13,7 @@
             <class name="com.abhinav.tests.PostOrderTest"/>
             <class name="com.abhinav.tests.DynamicJson"/>
             <class name="com.abhinav.tests.SerializeTest"/>
+            <class name="com.abhinav.tests.SpecBuilderTest"/>
         </classes>
     </test>
 
