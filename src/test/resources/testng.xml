@@ -12,6 +12,7 @@
             <class name="com.abhinav.tests.PostEchoTest"/>
             <class name="com.abhinav.tests.PostOrderTest"/>
             <class name="com.abhinav.tests.DynamicJson"/>
+            <class name="com.abhinav.tests.SerializeTest"/>
         </classes>
     </test>
 

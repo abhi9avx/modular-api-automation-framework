@@ -13,7 +13,8 @@ public class PostOrderTest {
   public void testPostOrder() {
     EchoController echoController = new EchoController();
 
-    EchoRequestDto request = EchoRequestDto.builder().id(12345).customer("John Smith").quantity(1).price(10.0).build();
+    EchoRequestDto request =
+        EchoRequestDto.builder().id(12345).customer("John Smith").quantity(1).price(10.0).build();
 
     Response response = echoController.postEchoRaw(request);
 
