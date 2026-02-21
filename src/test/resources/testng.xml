@@ -14,6 +14,7 @@
             <class name="com.abhinav.tests.DynamicJson"/>
             <class name="com.abhinav.tests.SerializeTest"/>
             <class name="com.abhinav.tests.SpecBuilderTest"/>
+            <class name="com.abhinav.tests.SpaceXLaunchTest"/>
         </classes>
     </test>
 

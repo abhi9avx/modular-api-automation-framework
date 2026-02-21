@@ -11,34 +11,34 @@ import org.testng.annotations.Test;
 
 public class SpecBuilderTest {
 
-    @Test
-    public void testSpecBuilder() {
+  @Test
+  public void testSpecBuilder() {
 
-        // Setup Request Body (DTO)
-        LocationRequestDto p = new LocationRequestDto();
-        p.setAccuracy(50);
-        p.setAddress("ward No - 9 , Purvi Thatha , Khagaria , Bihar");
-        p.setLanguage("French-IN");
-        p.setName("Abhinav Kumar");
-        p.setPhone_number("(+91) 8406938733");
-        p.setWebsite("http://google.com");
-        p.setTypes(List.of("shoe park", "shop"));
+    // Setup Request Body (DTO)
+    LocationRequestDto p = new LocationRequestDto();
+    p.setAccuracy(50);
+    p.setAddress("ward No - 9 , Purvi Thatha , Khagaria , Bihar");
+    p.setLanguage("French-IN");
+    p.setName("Abhinav Kumar");
+    p.setPhone_number("(+91) 8406938733");
+    p.setWebsite("http://google.com");
+    p.setTypes(List.of("shoe park", "shop"));
 
-        LocationRequestDto.Location l = new LocationRequestDto.Location();
-        l.setLat(-38.383494);
-        l.setLng(33.427362);
-        p.setLocation(l);
+    LocationRequestDto.Location l = new LocationRequestDto.Location();
+    l.setLat(-38.383494);
+    l.setLng(33.427362);
+    p.setLocation(l);
 
-        // Validation Spec
-        ResponseSpecification resSpec = new ResponseSpecBuilder().expectStatusCode(200)
-                .expectContentType(ContentType.JSON).build();
+    // Validation Spec
+    ResponseSpecification resSpec =
+        new ResponseSpecBuilder().expectStatusCode(200).expectContentType(ContentType.JSON).build();
 
-        // Controller Call
-        Response response = PlaceController.addPlace(p);
+    // Controller Call
+    Response response = PlaceController.addPlace(p);
 
-        // Validation & Extraction
-        String responseString = response.then().spec(resSpec).extract().response().asString();
+    // Validation & Extraction
+    String responseString = response.then().spec(resSpec).extract().response().asString();
 
-        System.out.println(responseString);
-    }
+    System.out.println(responseString);
+  }
 }
