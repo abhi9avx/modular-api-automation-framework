@@ -58,3 +58,8 @@ INTERVIEW_QA.md
 allure-results/
 allure-report/
 test-output/
+
+# ### Interview Documents ###
+INTERVIEW_PRACTICE_SET.md
+SDET-API-Automation-Questions.md
+SDET-System-Design-Interview.md
