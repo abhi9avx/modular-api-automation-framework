@@ -1,5 +1,6 @@
 package com.abhinav.framework.controller;
 
+import com.abhinav.framework.dto.ComplexResponseDto;
 import com.abhinav.framework.dto.HttpBinResponseDto;
 import com.abhinav.framework.enums.HttpBinApi;
 import io.restassured.RestAssured;
@@ -10,6 +11,7 @@ import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Map;
 import lombok.SneakyThrows;
 
 public class HttpBinController {
@@ -43,5 +45,23 @@ public class HttpBinController {
         .spec(getResponseSpec())
         .extract()
         .as(HttpBinResponseDto.class);
+  }
+
+  private RequestSpecification getRequestSpecForPayload(Map<String, Object> payload) {
+    return new RequestSpecBuilder()
+        .setBaseUri(BASE_URL)
+        .setContentType(ContentType.JSON)
+        .setBody(payload)
+        .build();
+  }
+
+  public ComplexResponseDto postComplexPayload(Map<String, Object> payload) {
+    return RestAssured.given()
+        .spec(getRequestSpecForPayload(payload))
+        .post(HttpBinApi.POST.getPath())
+        .then()
+        .spec(getResponseSpec())
+        .extract()
+        .as(ComplexResponseDto.class);
   }
 }
