@@ -58,4 +58,23 @@ public class FormDataTest {
     // the file or base64 data.
     assertNotNull(response.getFiles().get("file"), "Uploaded file content should be present");
   }
+
+  @Test
+  public void testUrlEncodedForm() {
+    // 1. Prepare form data payload
+    Map<String, String> formData = new HashMap<>();
+    formData.put("username", "abhinav");
+    formData.put("role", "SDET");
+
+    // 2. Pass to controller
+    HttpBinController controller = new HttpBinController();
+    HttpBinResponseDto response = controller.postUrlEncodedForm(formData);
+
+    // 3. Assertions
+    assertNotNull(response);
+    assertNotNull(response.getForm(), "Form data should not be null in the response");
+
+    assertEquals(response.getForm().get("username"), "abhinav");
+    assertEquals(response.getForm().get("role"), "SDET");
+  }
 }

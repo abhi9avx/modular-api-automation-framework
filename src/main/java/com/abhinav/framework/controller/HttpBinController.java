@@ -106,4 +106,23 @@ public class HttpBinController {
         .extract()
         .as(HttpBinResponseDto.class);
   }
+
+  private RequestSpecification getRequestSpecForUrlEncodedForm(
+      java.util.Map<String, String> formData) {
+    return new RequestSpecBuilder()
+        .setBaseUri(BASE_URL)
+        .setContentType(ContentType.URLENC)
+        .addFormParams(formData)
+        .build();
+  }
+
+  public HttpBinResponseDto postUrlEncodedForm(java.util.Map<String, String> formData) {
+    return RestAssured.given()
+        .spec(getRequestSpecForUrlEncodedForm(formData))
+        .post(HttpBinApi.POST.getPath())
+        .then()
+        .spec(getResponseSpec())
+        .extract()
+        .as(HttpBinResponseDto.class);
+  }
 }
