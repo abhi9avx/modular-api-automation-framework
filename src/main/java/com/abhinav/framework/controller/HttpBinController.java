@@ -63,4 +63,22 @@ public class HttpBinController {
         .extract()
         .as(ComplexResponseDto.class);
   }
+
+  private RequestSpecification getRequestSpecForFormData(java.util.Map<String, String> formData) {
+    RequestSpecBuilder builder =
+        new RequestSpecBuilder().setBaseUri(BASE_URL).setContentType("multipart/form-data");
+
+    formData.forEach(builder::addMultiPart);
+    return builder.build();
+  }
+
+  public HttpBinResponseDto postFormData(java.util.Map<String, String> formData) {
+    return RestAssured.given()
+        .spec(getRequestSpecForFormData(formData))
+        .post(HttpBinApi.POST.getPath())
+        .then()
+        .spec(getResponseSpec())
+        .extract()
+        .as(HttpBinResponseDto.class);
+  }
 }

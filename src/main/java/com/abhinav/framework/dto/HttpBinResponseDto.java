@@ -15,4 +15,5 @@ public class HttpBinResponseDto {
   private String url;
   private HttpBinRequestDto json;
   private String origin;
+  private java.util.Map<String, String> form;
 }

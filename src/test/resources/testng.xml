@@ -17,6 +17,7 @@
             <class name="com.abhinav.tests.SpaceXLaunchTest"/>
             <class name="com.abhinav.tests.HttpBinPostTest"/>
             <class name="com.abhinav.tests.ComplexPayloadTest"/>
+            <class name="com.abhinav.tests.FormDataTest"/>
         </classes>
     </test>
 
