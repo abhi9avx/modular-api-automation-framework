@@ -22,132 +22,133 @@ import org.testng.annotations.Test;
 
 public class ComplexPayloadTest {
 
-    @Test
-    public void testComplexPayloadWithMap() {
-        // 1. Construct the payload using Map and List
-        Map<String, Object> payload = new HashMap<>();
+  @Test
+  public void testComplexPayloadWithMap() {
+    // 1. Construct the payload using Map and List
+    Map<String, Object> payload = new HashMap<>();
 
-        // -- User Object Construction --
-        Map<String, Object> userMap = new HashMap<>();
-        userMap.put("id", 101);
-        userMap.put("name", "Abhinav");
+    // -- User Object Construction --
+    Map<String, Object> userMap = new HashMap<>();
+    userMap.put("id", 101);
+    userMap.put("name", "Abhinav");
 
-        List<String> roles = Arrays.asList("SDET", "Automation Engineer");
-        userMap.put("roles", roles);
+    List<String> roles = Arrays.asList("SDET", "Automation Engineer");
+    userMap.put("roles", roles);
 
-        // Profile Object
-        Map<String, Object> profileMap = new HashMap<>();
-        profileMap.put("email", "abhinav@test.com");
+    // Profile Object
+    Map<String, Object> profileMap = new HashMap<>();
+    profileMap.put("email", "abhinav@test.com");
 
-        // Phones List
-        List<Map<String, String>> phones = new ArrayList<>();
-        Map<String, String> personalPhone = new HashMap<>();
-        personalPhone.put("type", "personal");
-        personalPhone.put("number", "9999999999");
-        phones.add(personalPhone);
+    // Phones List
+    List<Map<String, String>> phones = new ArrayList<>();
+    Map<String, String> personalPhone = new HashMap<>();
+    personalPhone.put("type", "personal");
+    personalPhone.put("number", "9999999999");
+    phones.add(personalPhone);
 
-        Map<String, String> workPhone = new HashMap<>();
-        workPhone.put("type", "work");
-        workPhone.put("number", "8888888888");
-        phones.add(workPhone);
+    Map<String, String> workPhone = new HashMap<>();
+    workPhone.put("type", "work");
+    workPhone.put("number", "8888888888");
+    phones.add(workPhone);
 
-        profileMap.put("phones", phones);
+    profileMap.put("phones", phones);
 
-        // Address Object
-        Map<String, Object> addressMap = new HashMap<>();
-        addressMap.put("street", "Sector 21");
-        addressMap.put("city", "Chandigarh");
+    // Address Object
+    Map<String, Object> addressMap = new HashMap<>();
+    addressMap.put("street", "Sector 21");
+    addressMap.put("city", "Chandigarh");
 
-        Map<String, Double> geoMap = new HashMap<>();
-        geoMap.put("lat", 30.7333);
-        geoMap.put("lng", 76.7794);
-        addressMap.put("geo", geoMap);
+    Map<String, Double> geoMap = new HashMap<>();
+    geoMap.put("lat", 30.7333);
+    geoMap.put("lng", 76.7794);
+    addressMap.put("geo", geoMap);
 
-        profileMap.put("address", addressMap);
-        userMap.put("profile", profileMap);
+    profileMap.put("address", addressMap);
+    userMap.put("profile", profileMap);
 
-        // -- Project Object Construction --
-        Map<String, Object> projectMap = new HashMap<>();
-        projectMap.put("name", "Self Healing Framework");
+    // -- Project Object Construction --
+    Map<String, Object> projectMap = new HashMap<>();
+    projectMap.put("name", "Self Healing Framework");
 
-        List<Map<String, String>> modules = new ArrayList<>();
-        Map<String, String> apiModule = new HashMap<>();
-        apiModule.put("module", "API");
-        apiModule.put("status", "completed");
-        modules.add(apiModule);
+    List<Map<String, String>> modules = new ArrayList<>();
+    Map<String, String> apiModule = new HashMap<>();
+    apiModule.put("module", "API");
+    apiModule.put("status", "completed");
+    modules.add(apiModule);
 
-        Map<String, String> uiModule = new HashMap<>();
-        uiModule.put("module", "UI");
-        uiModule.put("status", "in-progress");
-        modules.add(uiModule);
+    Map<String, String> uiModule = new HashMap<>();
+    uiModule.put("module", "UI");
+    uiModule.put("status", "in-progress");
+    modules.add(uiModule);
 
-        projectMap.put("modules", modules);
-        projectMap.put("active", true);
+    projectMap.put("modules", modules);
+    projectMap.put("active", true);
 
-        // Add User and Project to main Payload Map
-        payload.put("user", userMap);
-        payload.put("project", projectMap);
+    // Add User and Project to main Payload Map
+    payload.put("user", userMap);
+    payload.put("project", projectMap);
 
-        // 2. Pass to controller
-        HttpBinController controller = new HttpBinController();
-        ComplexResponseDto response = controller.postComplexPayload(payload);
+    // 2. Pass to controller
+    HttpBinController controller = new HttpBinController();
+    ComplexResponseDto response = controller.postComplexPayload(payload);
 
-        // 3. Assertions
-        assertEquals(response.getJson().getUser().getName(), "Abhinav");
-        assertEquals(response.getJson().getUser().getProfile().getEmail(), "abhinav@test.com");
-        assertEquals(
-                response.getJson().getUser().getProfile().getPhones().get(0).getNumber(), "9999999999");
+    // 3. Assertions
+    assertEquals(response.getJson().getUser().getName(), "Abhinav");
+    assertEquals(response.getJson().getUser().getProfile().getEmail(), "abhinav@test.com");
+    assertEquals(
+        response.getJson().getUser().getProfile().getPhones().get(0).getNumber(), "9999999999");
 
-        assertEquals(response.getJson().getProject().getName(), "Self Healing Framework");
-        assertTrue(response.getJson().getProject().isActive());
-        assertEquals(response.getJson().getProject().getModules().get(0).getStatus(), "completed");
-    }
+    assertEquals(response.getJson().getProject().getName(), "Self Healing Framework");
+    assertTrue(response.getJson().getProject().isActive());
+    assertEquals(response.getJson().getProject().getModules().get(0).getStatus(), "completed");
+  }
 
-    @Test
-    public void testComplexPayloadWithObject() {
-        RootRequest req = new RootRequest();
+  @Test
+  public void testComplexPayloadWithObject() {
+    RootRequest req = new RootRequest();
 
-        User user = new User();
-        user.setId(101);
-        user.setName("Abhinav");
-        user.setRoles(Arrays.asList("SDET", "Automation Engineer"));
+    User user = new User();
+    user.setId(101);
+    user.setName("Abhinav");
+    user.setRoles(Arrays.asList("SDET", "Automation Engineer"));
 
-        Profile profile = new Profile();
-        profile.setEmail("abhinav@test.com");
-        profile.setPhones(
-                Arrays.asList(new Phone("personal", "9999999999"), new Phone("work", "8888888888")));
+    Profile profile = new Profile();
+    profile.setEmail("abhinav@test.com");
+    profile.setPhones(
+        Arrays.asList(new Phone("personal", "9999999999"), new Phone("work", "8888888888")));
 
-        Geo geo = new Geo();
-        geo.setLat(30.7333);
-        geo.setLng(76.7794);
+    Geo geo = new Geo();
+    geo.setLat(30.7333);
+    geo.setLng(76.7794);
 
-        Address address = new Address();
-        address.setStreet("Sector 21");
-        address.setCity("Chandigarh");
-        address.setGeo(geo);
+    Address address = new Address();
+    address.setStreet("Sector 21");
+    address.setCity("Chandigarh");
+    address.setGeo(geo);
 
-        profile.setAddress(address);
-        user.setProfile(profile);
+    profile.setAddress(address);
+    user.setProfile(profile);
 
-        Project project = new Project();
-        project.setName("Self Healing Framework");
-        project.setModules(Arrays.asList(new Module("API", "completed"), new Module("UI", "in-progress")));
-        project.setActive(true);
+    Project project = new Project();
+    project.setName("Self Healing Framework");
+    project.setModules(
+        Arrays.asList(new Module("API", "completed"), new Module("UI", "in-progress")));
+    project.setActive(true);
 
-        req.setUser(user);
-        req.setProject(project);
+    req.setUser(user);
+    req.setProject(project);
 
-        // Pass structured Request Object DTO to controller
-        HttpBinController controller = new HttpBinController();
-        ComplexResponseDto response = controller.postComplexPayload(req);
+    // Pass structured Request Object DTO to controller
+    HttpBinController controller = new HttpBinController();
+    ComplexResponseDto response = controller.postComplexPayload(req);
 
-        // Validate heavily typed Response Object DTO getters
-        assertEquals(response.getJson().getUser().getName(), "Abhinav");
-        assertEquals(response.getJson().getUser().getProfile().getEmail(), "abhinav@test.com");
-        assertEquals(
-                response.getJson().getUser().getProfile().getPhones().get(0).getNumber(), "9999999999");
-        assertEquals(response.getJson().getProject().getName(), "Self Healing Framework");
-        assertTrue(response.getJson().getProject().isActive());
-        assertEquals(response.getJson().getProject().getModules().get(0).getStatus(), "completed");
-    }
+    // Validate heavily typed Response Object DTO getters
+    assertEquals(response.getJson().getUser().getName(), "Abhinav");
+    assertEquals(response.getJson().getUser().getProfile().getEmail(), "abhinav@test.com");
+    assertEquals(
+        response.getJson().getUser().getProfile().getPhones().get(0).getNumber(), "9999999999");
+    assertEquals(response.getJson().getProject().getName(), "Self Healing Framework");
+    assertTrue(response.getJson().getProject().isActive());
+    assertEquals(response.getJson().getProject().getModules().get(0).getStatus(), "completed");
+  }
 }
