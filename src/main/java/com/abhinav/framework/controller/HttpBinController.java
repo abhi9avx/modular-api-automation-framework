@@ -81,4 +81,29 @@ public class HttpBinController {
         .extract()
         .as(HttpBinResponseDto.class);
   }
+
+  private RequestSpecification getRequestSpecForFormDataWithFile(
+      java.util.Map<String, String> formData, java.io.File file) {
+    RequestSpecBuilder builder =
+        new RequestSpecBuilder().setBaseUri(BASE_URL).setContentType("multipart/form-data");
+
+    if (formData != null) {
+      formData.forEach(builder::addMultiPart);
+    }
+    if (file != null && file.exists()) {
+      builder.addMultiPart("file", file);
+    }
+    return builder.build();
+  }
+
+  public HttpBinResponseDto postFormDataWithFile(
+      java.util.Map<String, String> formData, java.io.File file) {
+    return RestAssured.given()
+        .spec(getRequestSpecForFormDataWithFile(formData, file))
+        .post(HttpBinApi.POST.getPath())
+        .then()
+        .spec(getResponseSpec())
+        .extract()
+        .as(HttpBinResponseDto.class);
+  }
 }
