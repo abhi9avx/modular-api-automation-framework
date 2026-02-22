@@ -1,0 +1,95 @@
+{
+    "type": "object",
+    "required": [
+        "args",
+        "data",
+        "files",
+        "form",
+        "headers",
+        "json",
+        "origin",
+        "url"
+    ],
+    "properties": {
+        "args": {
+            "type": "object",
+            "additionalProperties": true
+        },
+        "data": {
+            "type": "string"
+        },
+        "files": {
+            "type": "object",
+            "additionalProperties": true
+        },
+        "form": {
+            "type": "object",
+            "required": [
+                "role",
+                "username"
+            ],
+            "properties": {
+                "role": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "headers": {
+            "type": "object",
+            "required": [
+                "Accept",
+                "Accept-Encoding",
+                "Content-Length",
+                "Content-Type",
+                "Host",
+                "User-Agent"
+            ],
+            "properties": {
+                "Accept": {
+                    "type": "string"
+                },
+                "Accept-Encoding": {
+                    "type": "string"
+                },
+                "Cache-Control": {
+                    "type": "string"
+                },
+                "Content-Length": {
+                    "type": "string"
+                },
+                "Content-Type": {
+                    "type": "string"
+                },
+                "Host": {
+                    "type": "string"
+                },
+                "Postman-Token": {
+                    "type": "string"
+                },
+                "User-Agent": {
+                    "type": "string"
+                },
+                "X-Amzn-Trace-Id": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": true
+        },
+        "json": {
+            "type": [
+                "null",
+                "object"
+            ]
+        },
+        "origin": {
+            "type": "string"
+        },
+        "url": {
+            "type": "string",
+            "format": "uri"
+        }
+    }
+}

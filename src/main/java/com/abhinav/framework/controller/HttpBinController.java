@@ -122,6 +122,9 @@ public class HttpBinController {
         .post(HttpBinApi.POST.getPath())
         .then()
         .spec(getResponseSpec())
+        .body(
+            io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath(
+                "httpbin-post-schema.json"))
         .extract()
         .as(HttpBinResponseDto.class);
   }
