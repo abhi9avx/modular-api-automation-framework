@@ -4,6 +4,9 @@ import static io.restassured.RestAssured.given;
 
 import com.abhinav.framework.dto.LocationRequestDto;
 import io.restassured.RestAssured;
+import io.restassured.filter.log.LogDetail;
+import io.restassured.filter.log.RequestLoggingFilter;
+import io.restassured.filter.log.ResponseLoggingFilter;
 import java.util.List;
 import org.testng.annotations.Test;
 
@@ -12,6 +15,10 @@ public class SerializeTest {
   public void testSerialize() {
 
     RestAssured.baseURI = "https://rahulshettyacademy.com";
+
+    // Add global request and response logging filters
+    RestAssured.filters(
+        new RequestLoggingFilter(LogDetail.BODY), new ResponseLoggingFilter(LogDetail.STATUS));
 
     LocationRequestDto p = new LocationRequestDto();
     p.setAccuracy(50);
@@ -29,8 +36,6 @@ public class SerializeTest {
 
     String res =
         given()
-            .log()
-            .all()
             .queryParam("key", "qaclick123")
             .body(p)
             .when()
