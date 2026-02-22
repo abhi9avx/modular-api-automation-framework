@@ -18,6 +18,7 @@
             <class name="com.abhinav.tests.HttpBinPostTest"/>
             <class name="com.abhinav.tests.FormDataTest"/>
             <class name="com.abhinav.tests.JsonPlaceholderUsersTest"/>
+            <class name="com.abhinav.tests.PostmanEchoPostTest"/>
         </classes>
     </test>
 
