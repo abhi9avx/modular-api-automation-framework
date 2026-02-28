@@ -20,6 +20,7 @@
             <class name="com.abhinav.tests.JsonPlaceholderUsersTest"/>
             <class name="com.abhinav.tests.PostmanEchoPostTest"/>
             <class name="com.abhinav.tests.ProductAddTest"/>
+            <class name="com.abhinav.tests.FakeStoreTest"/>
         </classes>
     </test>
 
