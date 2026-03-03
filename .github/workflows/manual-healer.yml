@@ -51,9 +51,10 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Create .env file
-          echo "GEMINI_API_KEY=${GEMINI_API_KEY}" > healer/.env
-          echo "GITHUB_TOKEN=${GITHUB_TOKEN}" >> healer/.env
+          # Create .env file in root and healer/
+          echo "GEMINI_API_KEY=${GEMINI_API_KEY}" > .env
+          echo "GITHUB_TOKEN=${GITHUB_TOKEN}" >> .env
+          cp .env healer/.env
           
           # Construct command
           CMD="./run_healer.sh"
