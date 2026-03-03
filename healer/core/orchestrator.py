@@ -140,4 +140,11 @@ class HealerOrchestrator:
         if self.telegram_manager:
             self.telegram_manager.send_healing_report(self.healing_results)
 
+        # Export PR links for GitHub Actions
+        if create_pr:
+            pr_links = [res.get('pr_url') for res in self.healing_results if res.get('pr_url')]
+            if pr_links:
+                with open(os.path.join(self.repo_path, "healer_pr.txt"), "w") as f:
+                    f.write(pr_links[0])
+
         return success

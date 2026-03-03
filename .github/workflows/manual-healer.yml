@@ -93,7 +93,14 @@ jobs:
       - name: Send Telegram Notification
         if: always()
         run: |
+          # Read PR link if it exists
+          PR_LINK_MSG=""
+          if [ -f "healer_pr.txt" ]; then
+            PR_URL=$(cat healer_pr.txt)
+            PR_LINK_MSG=" %0A*Pull Request*: [View PR]($PR_URL)"
+          fi
+          
           curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
             -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
             -d parse_mode=Markdown \
-            -d text="*Manual Self-Healing Finished!* %0A*Status*: ${{ job.status }} %0A*Run Details*: [View Run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+            -d text="*Manual Self-Healing Finished!* %0A*Status*: ${{ job.status }}${PR_LINK_MSG} %0A*Run Details*: [View Run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
