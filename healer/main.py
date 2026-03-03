@@ -14,11 +14,13 @@ def main():
     args = parser.parse_args()
     
     orchestrator = HealerOrchestrator(args.repo, args.config)
-    orchestrator.run_repair_loop(
+    success = orchestrator.run_repair_loop(
         test_filter=args.test_filter,
         use_docker=args.use_docker,
         create_pr=args.create_pr
     )
+    
+    sys.exit(0 if success else 1)
 
 if __name__ == "__main__":
     main()

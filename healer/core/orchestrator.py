@@ -7,6 +7,7 @@ from healer.providers.gemini import GeminiClient
 from healer.providers.docker_rt import DockerManager
 from healer.providers.github_vcs import GitHubManager
 from healer.utils.patcher import Patcher
+from healer.providers.telegram import TelegramManager
 
 class HealerOrchestrator:
     def __init__(self, repo_path, config_path):
@@ -15,7 +16,9 @@ class HealerOrchestrator:
         self.config = self.cl.load_config()
         self.max_attempts = self.config.get("max_attempts", 3)
         self.artifacts_path = os.path.join(self.repo_path, self.config.get("artifacts_path", "build/test-results/test"))
-        self.gemini_client = GeminiClient(model=self.config.get("model", "gemini-2.0-flash-exp"))
+        self.gemini_client = GeminiClient(model=self.config.get("model", "gemini-2.0-flash"))
+        self.telegram_manager = TelegramManager()
+        self.healing_results = []
 
     def run_repair_loop(self, test_filter=None, use_docker=False, create_pr=False):
         for attempt in range(1, self.max_attempts + 1):
@@ -46,6 +49,7 @@ class HealerOrchestrator:
             
             if result.returncode == 0:
                 print("✓ All tests passed!")
+                success = True
                 break
             
             print(f"✗ Tests Failed (Exit Code: {result.returncode})")
@@ -85,6 +89,10 @@ class HealerOrchestrator:
             
             if not suggestion or suggestion.confidence < 0.5:
                 print("⚠ Gemini couldn't provide a high-confidence fix.")
+                self.healing_results.append({
+                    "test_name": target.test_name,
+                    "status": "no_fix_found"
+                })
                 break
                 
             print(f"✓ Fix identified (Confidence: {suggestion.confidence})")
@@ -94,6 +102,12 @@ class HealerOrchestrator:
             print("➜ Applying fix...")
             if Patcher.apply_patch(self.repo_path, suggestion.diff):
                 print("✓ Patch applied successfully.")
+                
+                res_entry = {
+                    "test_name": target.test_name,
+                    "status": "fixed",
+                    "explanation": suggestion.explanation
+                }
                 
                 if create_pr:
                     print("➜ GitHub Integration: Creating Pull Request...")
@@ -108,8 +122,21 @@ class HealerOrchestrator:
                         )
                         if pr_url:
                             print(f"✓ Pull Request created: {pr_url}")
+                            res_entry["pr_url"] = pr_url
                         else:
                             print("✗ Applied fix but failed to create PR.")
+                
+                self.healing_results.append(res_entry)
             else:
                 print("✗ Failed to apply patch.")
+                self.healing_results.append({
+                    "test_name": target.test_name,
+                    "status": "patch_failed"
+                })
                 break
+
+        # Final Notification
+        if self.telegram_manager:
+            self.telegram_manager.send_healing_report(self.healing_results)
+
+        return success
