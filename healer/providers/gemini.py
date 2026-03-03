@@ -4,7 +4,10 @@ import json
 from dataclasses import dataclass
 from dotenv import load_dotenv
 
+# Load .env from current dir or healer/ dir
 load_dotenv()
+load_dotenv(os.path.join(os.path.dirname(__file__), "../../.env"))
+load_dotenv(os.path.join(os.getcwd(), "healer/.env"))
 
 @dataclass
 class FixSuggestion:

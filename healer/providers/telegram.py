@@ -1,6 +1,12 @@
 import os
 import requests
 
+from dotenv import load_dotenv
+
+load_dotenv()
+load_dotenv(os.path.join(os.path.dirname(__file__), "../../.env"))
+load_dotenv(os.path.join(os.getcwd(), "healer/.env"))
+
 class TelegramManager:
     def __init__(self, token=None, chat_id=None):
         self.token = token or os.getenv("TELEGRAM_BOT_TOKEN")

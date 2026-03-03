@@ -21,6 +21,7 @@ class HealerOrchestrator:
         self.healing_results = []
 
     def run_repair_loop(self, test_filter=None, use_docker=False, create_pr=False):
+        success = False
         for attempt in range(1, self.max_attempts + 1):
             print(f"\n=== Repair Attempt {attempt}/{self.max_attempts} ===")
 
