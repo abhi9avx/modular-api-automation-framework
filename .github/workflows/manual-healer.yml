@@ -1,0 +1,80 @@
+name: Manual Self-Healing Trigger
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_filter:
+        description: 'Specific test class or method to run (leave empty for all)'
+        required: false
+        default: ''
+      use_docker:
+        description: 'Run tests in Docker container?'
+        type: boolean
+        default: false
+      create_pr:
+        description: 'Create a Pull Request if fixed?'
+        type: boolean
+        default: true
+
+jobs:
+  heal:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Python Dependencies
+        run: |
+          python -m venv healer/.venv
+          ./healer/.venv/bin/pip install -r healer/requirements.txt
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "Self-Healing Agent"
+          git config --global user.email "agent@self-healing.ai"
+
+      - name: Run Manual Healer
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Create .env file
+          echo "GEMINI_API_KEY=${GEMINI_API_KEY}" > healer/.env
+          echo "GITHUB_TOKEN=${GITHUB_TOKEN}" >> healer/.env
+          
+          # Construct command
+          CMD="./run_healer.sh"
+          if [ "${{ github.event.inputs.test_filter }}" != "" ]; then
+            CMD="$CMD --test-filter ${{ github.event.inputs.test_filter }}"
+          fi
+          if [ "${{ github.event.inputs.use_docker }}" == "true" ]; then
+            CMD="$CMD --use-docker"
+          fi
+          if [ "${{ github.event.inputs.create_pr }}" == "true" ]; then
+            CMD="$CMD --create-pr"
+          fi
+          
+          chmod +x run_healer.sh
+          echo "Executing: $CMD"
+          eval $CMD
+
+      - name: Send Telegram Notification
+        if: always()
+        run: |
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d parse_mode=Markdown \
+            -d text="*Manual Self-Healing Finished!* %0A*Status*: ${{ job.status }} %0A*Run Details*: [View Run](${{ github.server_url }}/${{{ github.repository }}}/actions/runs/${{ github.run_id }})"

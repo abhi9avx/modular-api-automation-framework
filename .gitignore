@@ -63,3 +63,10 @@ test-output/
 INTERVIEW_PRACTICE_SET.md
 SDET-API-Automation-Questions.md
 SDET-System-Design-Interview.md
+
+# ### Healer / Python ###
+healer/.env
+healer/.venv/
+__pycache__/
+*.patch
+temp_fix.patch

@@ -1,0 +1,3 @@
+max_attempts: 3
+artifacts_path: "build/test-results/test"
+model: "gemini-2.0-flash"

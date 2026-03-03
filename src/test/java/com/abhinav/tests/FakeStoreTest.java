@@ -62,6 +62,9 @@ public class FakeStoreTest {
         .when()
         .post("https://fakestoreapi.com" + FakeStoreProduct.PRODUCT.getPath())
         .then()
+        .statusCode(201) // Corrected status code assertion
+        .log()
+        .body()
         .assertThat()
         .body(matchesJsonSchemaInClasspath("schemas/fakestore-product-schema.json"));
   }

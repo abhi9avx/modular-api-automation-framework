@@ -1,0 +1,60 @@
+name: Nightly Self-Healing Tests
+
+on:
+  schedule:
+    # 10:10 AM IST (04:40 AM UTC)
+    - cron: '40 4 * * *'
+    # 10:10 PM IST (16:40 PM UTC)
+    - cron: '40 16 * * *'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Python Dependencies
+        run: |
+          python -m venv healer/.venv
+          ./healer/.venv/bin/pip install -r healer/requirements.txt
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "Self-Healing Agent"
+          git config --global user.email "agent@self-healing.ai"
+
+      - name: Run Self-Healing Tests
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Create .env file for the healer
+          echo "GEMINI_API_KEY=${GEMINI_API_KEY}" > healer/.env
+          echo "GITHUB_TOKEN=${GITHUB_TOKEN}" >> healer/.env
+          
+          # Run the healer with PR creation enabled
+          chmod +x run_healer.sh
+          ./run_healer.sh --create-pr
+
+      - name: Send Telegram Notification
+        if: always()
+        run: |
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d parse_mode=Markdown \
+            -d text="*Nightly Self-Healing Finished!* %0A*Status*: ${{ job.status }} %0A*Run Details*: [View Run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
