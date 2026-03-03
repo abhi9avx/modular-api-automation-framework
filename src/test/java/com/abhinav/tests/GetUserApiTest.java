@@ -45,7 +45,7 @@ public class GetUserApiTest {
 
     // 2. Validate Status: Expect 200 OK
     log.info("Validating response status code");
-    Assert.assertEquals(response.getStatusCode(), 500);
+    Assert.assertEquals(response.getStatusCode(), 200);
 
     // 3. Parse Response
     String responseBody = response.getBody().asString();
