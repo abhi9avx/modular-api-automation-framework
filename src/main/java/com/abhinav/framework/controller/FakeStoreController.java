@@ -12,8 +12,7 @@ import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 
 /**
- * FakeStoreController handles API interactions for the FakeStore products
- * endpoint. Refactored to
+ * FakeStoreController handles API interactions for the FakeStore products endpoint. Refactored to
  * include Request/Response specifications for improved modularity.
  */
 public class FakeStoreController {
@@ -24,7 +23,8 @@ public class FakeStoreController {
   private static RequestSpecification getRequestSpec(FakeStoreRequestDto requestDto) {
     return new RequestSpecBuilder()
         .setBaseUri(BASE_URL)
-        .addHeader("User-Agent",
+        .addHeader(
+            "User-Agent",
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
         .setContentType(ContentType.JSON)
         .setBody(requestDto)
