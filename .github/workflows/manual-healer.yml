@@ -53,6 +53,11 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
+          # Verify Secrets
+          if [ -z "${GEMINI_API_KEY}" ]; then echo "❌ GEMINI_API_KEY is MISSING in environment"; else echo "✅ GEMINI_API_KEY is present"; fi
+          if [ -z "${GITHUB_TOKEN}" ]; then echo "❌ GITHUB_TOKEN is MISSING in environment"; else echo "✅ GITHUB_TOKEN is present"; fi
+          if [ -z "${TELEGRAM_BOT_TOKEN}" ]; then echo "❌ TELEGRAM_BOT_TOKEN is MISSING in environment"; else echo "✅ TELEGRAM_BOT_TOKEN is present"; fi
+          
           # Create .env file in root and healer/
           echo "GEMINI_API_KEY=${GEMINI_API_KEY}" > .env
           echo "GITHUB_TOKEN=${GITHUB_TOKEN}" >> .env
