@@ -38,21 +38,33 @@ class TelegramManager:
         if not results:
             return
 
-        print(f"ℹ Preparing report for {len(results)} results...")
-        message = "<b>🤖 Self-Healing Report</b>\n\n"
+        print(f"ℹ Preparing professional report for {len(results)} results...")
+        
+        # Header with branding
+        message = "<b>✨ API Self-Healing Report</b>\n"
+        message += "━━━━━━━━━━━━━━━━━━\n\n"
+
         for res in results:
             status_emoji = "✅" if res['status'] == 'fixed' else "❌"
-            message += f"{status_emoji} <b>Test</b>: <code>{res['test_name']}</code>\n"
-            message += f"   <b>Result</b>: {res['status'].capitalize()}\n"
+            status_text = "FIXED" if res['status'] == 'fixed' else res['status'].upper()
             
+            # Test & Status Section
+            message += f"{status_emoji} <b>Test Case:</b> <code>{res['test_name']}</code>\n"
+            message += f"📊 <b>Status:</b> <code>{status_text}</code>\n"
+            
+            # Analysis Section
             if res.get('explanation'):
-                # Escape HTML special characters in explanation
                 expl = res['explanation'].replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
-                message += f"   <b>Fix</b>: {expl[:120]}...\n"
+                message += f"\n🔍 <b>AI Analysis:</b>\n<i>{expl}</i>\n"
             
+            # Action Section (Buttons/Links)
             if res.get('pr_url'):
-                message += f"   <b>PR</b>: <a href='{res['pr_url']}'>View Pull Request</a>\n"
+                message += f"\n🛠 <b>Action Required:</b>\n"
+                message += f"└ 🚀 <a href='{res['pr_url']}'><b>Review & Merge Pull Request</b></a>\n"
             
             message += "\n"
+
+        message += "━━━━━━━━━━━━━━━━━━\n"
+        message += "<i>Automated repair by Healer Agent</i>"
 
         self.send_message(message)
