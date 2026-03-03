@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       test_filter:
-        description: 'Specific test class or method to run (leave empty for all)'
+        description: 'Format: com.package.ClassName or ClassName.testMethod (No --tests flag needed)'
         required: false
         default: ''
       use_docker:
@@ -57,8 +57,13 @@ jobs:
           
           # Construct command
           CMD="./run_healer.sh"
-          if [ "${{ github.event.inputs.test_filter }}" != "" ]; then
-            CMD="$CMD --test-filter ${{ github.event.inputs.test_filter }}"
+          FILTER="${{ github.event.inputs.test_filter }}"
+          if [ "$FILTER" != "" ]; then
+            if [[ "$FILTER" == --* ]]; then
+               CMD="$CMD $FILTER"
+            else
+               CMD="$CMD --test-filter $FILTER"
+            fi
           fi
           if [ "${{ github.event.inputs.use_docker }}" == "true" ]; then
             CMD="$CMD --use-docker"
