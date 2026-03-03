@@ -40,7 +40,7 @@ class GitHubManager:
         except Exception:
             return None, None
 
-    def create_pr(self, branch_name, title, body, base="master"):
+    def create_pr(self, branch_name, title, body, base="main"):
         if not self.repo:
             print("GitHub repository not accessible. PR cannot be created.")
             return None

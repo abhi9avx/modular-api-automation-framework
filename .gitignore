@@ -65,6 +65,7 @@ SDET-API-Automation-Questions.md
 SDET-System-Design-Interview.md
 
 # ### Healer / Python ###
+.env
 healer/.env
 healer/.venv/
 __pycache__/

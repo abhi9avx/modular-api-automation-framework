@@ -16,6 +16,10 @@ on:
         type: boolean
         default: true
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   heal:
     runs-on: ubuntu-latest

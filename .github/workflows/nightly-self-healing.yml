@@ -8,6 +8,10 @@ on:
     - cron: '40 16 * * *'
   workflow_dispatch: # Allow manual triggering
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
