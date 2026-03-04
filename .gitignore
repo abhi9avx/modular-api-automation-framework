@@ -71,3 +71,4 @@ healer/.venv/
 __pycache__/
 *.patch
 temp_fix.patch
+agent_state.db

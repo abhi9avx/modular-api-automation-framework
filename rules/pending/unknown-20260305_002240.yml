@@ -1,0 +1,4 @@
+api_name: unknown
+curl: "curl https://httpbin.org/get\n\nExpected Response:\n{\n  \"url\": \"https://httpbin.org/get\"\
+  \n}"
+expected_result: ''

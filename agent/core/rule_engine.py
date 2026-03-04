@@ -1,6 +1,7 @@
 import os
 import time
 import yaml
+import re
 from agent.utils.logger import get_logger
 from agent.core.state_manager import StateManager, JobState
 from agent.providers.gemini_generator import GeminiGenerator
@@ -28,7 +29,8 @@ class RuleEngine:
             trigger_data = yaml.safe_load(f)
 
         api_name = trigger_data.get("api_name", "unknown")
-        branch_name = f"feature/{api_name}-{job_id[:8]}"
+        safe_api_name = re.sub(r'[^a-zA-Z0-9-]', '-', api_name.lower())
+        branch_name = f"feature/{safe_api_name}-{job_id}"
         
         # 1. Generate Initial Code
         prompt = f"{self.system_prompt}\n\nORIGINAL REQUEST YAML:\n{yaml.dump(trigger_data)}"

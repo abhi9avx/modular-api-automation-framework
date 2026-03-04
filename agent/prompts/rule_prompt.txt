@@ -12,6 +12,10 @@ You are an expert SDET. Your task is to generate high-fidelity API automation co
 - **Controllers**: `src/main/java/com/abhinav/framework/controller/`
 - **Tests**: `src/test/java/com/abhinav/tests/`
 
+### ABSOLUTELY FORBIDDEN (INTERNAL FRAMEWORK FILES)
+- **DO NOT** generate or overwrite `Basic.java`, `DtoComparisonUtil.java`, `LoggerUtil.java`, `build.gradle`, or `pom.xml`. 
+- These files are already provided by the framework. Assume they exist and are ready to be used.
+
 ### MANDATORY CLASS TEMPLATES (HIGH FIDELITY)
 
 #### 1. Controller Template (Static Utility Style)

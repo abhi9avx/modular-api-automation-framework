@@ -13,5 +13,5 @@ def get_logger(name: str):
 
 class JobIdLoggerAdapter(logging.LoggerAdapter):
     def process(self, msg, kwargs):
-        job_id = kwargs.get('job_id', self.extra.get('job_id', 'SYSTEM'))
-        return f"{msg}", {**kwargs, 'extra': {'job_id': job_id}}
+        job_id = kwargs.pop('job_id', self.extra.get('job_id', 'SYSTEM'))
+        return msg, {**kwargs, 'extra': {'job_id': job_id}}

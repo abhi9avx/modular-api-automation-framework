@@ -1,12 +1,17 @@
 package com.abhinav.framework.enums;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
-@Getter
-@AllArgsConstructor
 public enum ProductAddition {
-  ADD_PRODUCT("/products/add");
+  ADD_PRODUCT;
 
-  private final String path;
+  private String path;
+
+  ProductAddition(String path) {
+    this.path = path;
+  }
+
+  ProductAddition() {}
+
+  public String getPath() {
+    return path;
+  }
 }

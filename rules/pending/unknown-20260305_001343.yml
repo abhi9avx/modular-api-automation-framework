@@ -1,0 +1,5 @@
+api_name: unknown
+curl: "curl -X POST https://httpbin.org/post -H \"Content-Type: application/json\"\
+  \ -d '{\"name\":\"phase2-test\"}'\nExpected Response:\n{\n  \"url\": \"https://httpbin.org/post\"\
+  \n}"
+expected_result: ''

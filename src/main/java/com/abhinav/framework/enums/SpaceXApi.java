@@ -1,12 +1,17 @@
 package com.abhinav.framework.enums;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
-@Getter
-@AllArgsConstructor
 public enum SpaceXApi {
-  GET_LAUNCHES("/v5/launches");
+  GET_LAUNCHES;
 
-  private final String path;
+  private String path;
+
+  SpaceXApi(String path) {
+    this.path = path;
+  }
+
+  SpaceXApi() {}
+
+  public String getPath() {
+    return path;
+  }
 }

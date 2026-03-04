@@ -1,12 +1,17 @@
 package com.abhinav.framework.enums;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
-@AllArgsConstructor
-@Getter
 public enum EchoPost {
-  ECHO_POST("/post");
+  ECHO_POST;
 
-  private final String path;
+  private String path;
+
+  EchoPost(String path) {
+    this.path = path;
+  }
+
+  EchoPost() {}
+
+  public String getPath() {
+    return path;
+  }
 }
