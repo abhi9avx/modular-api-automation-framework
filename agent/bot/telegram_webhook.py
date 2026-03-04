@@ -23,6 +23,13 @@ ALLOWED_USERS = os.getenv("ALLOWED_TELEGRAM_USERS", "").split(",")
 
 def agent_worker(job_data: dict):
     job_id = job_data["job_id"]
+    
+    # Idempotency check: Exit early if already completed or PR created
+    job_state = state_manager.get_job(job_id)
+    if job_state and job_state.get("status") in [JobState.COMPLETED, JobState.PR_CREATED]:
+        logger.info(f"Duplicate execution halted. Job already in terminal state: {job_state.get('status')}", job_id=job_id)
+        return
+
     engine = RuleEngine(os.getcwd(), state_manager)
     try:
         engine.execute(job_id, job_data["trigger_path"], is_dryrun=False)
