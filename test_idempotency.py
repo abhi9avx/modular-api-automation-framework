@@ -1,14 +1,19 @@
-from agent.core.state_manager import StateManager
+from agent.core.state_manager import StateManager, JobState
 from agent.bot.telegram_webhook import agent_worker
+import sqlite3
 
 def test_idempotency():
     sm = StateManager()
     job_id = "test_duplicate_job"
     chat_id = "123"
 
+    # Reset test job
+    with sqlite3.connect("agent_state.db") as conn:
+        conn.execute("DELETE FROM jobs WHERE job_id = ?", (job_id,))
+
     # Step 1: Simulate the first successful run creating state
     sm.create_job(job_id, chat_id)
-    sm.update_state(job_id, "COMPLETED", pr_link="https://github.com/abc")
+    sm.update_state(job_id, JobState.PR_CREATED, pr_link="https://github.com/abc")
 
     print(f"Current state: {sm.get_job(job_id)['status']}")
 
@@ -16,7 +21,8 @@ def test_idempotency():
     job_data = {
         "job_id": job_id,
         "text": "curl https://example.com",
-        "chat_id": chat_id
+        "chat_id": chat_id,
+        "trigger_path": "fake/path"
     }
 
     # This should exit early and NOT re-run
