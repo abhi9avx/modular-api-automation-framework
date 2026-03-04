@@ -35,12 +35,18 @@ job_queue.start_workers(agent_worker)
 @app.post("/webhook")
 async def webhook_endpoint(request: Request):
     data = await request.json()
+    logger.debug(f"Incoming webhook data: {data}")
+    
     message = data.get("message", {})
-    from_user = str(message.get("from", {}).get("username", ""))
+    from_info = message.get("from", {})
+    user_id = str(from_info.get("id", ""))
+    username = str(from_info.get("username", ""))
     text = message.get("text", "")
 
-    if from_user not in ALLOWED_USERS:
-        logger.warning(f"Unauthorized access from {from_user}")
+    logger.info(f"Message from UserID={user_id}, Username={username}")
+
+    if user_id not in ALLOWED_USERS and username not in ALLOWED_USERS:
+        logger.warning(f"Unauthorized access from ID={user_id}, Username={username}")
         return {"status": "unauthorized"}
 
     if not text:
