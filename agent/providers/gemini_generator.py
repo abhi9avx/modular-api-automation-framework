@@ -27,6 +27,8 @@ class GeminiGenerator:
             data = extract_json(response.text)
             if data and "files" in data:
                 return GenerationResponse(**data)
+            
+            logger.error(f"Failed to extract files from JSON. Raw text: {response.text[:500]}...", job_id=job_id)
             return None
         except Exception as e:
             logger.error(f"Generation error: {e}", job_id=job_id)
