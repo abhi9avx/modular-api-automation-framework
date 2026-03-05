@@ -13,7 +13,8 @@ class SecurityGuardrails:
         blacklist = {"Basic.java", "DtoComparisonUtil.java", "LoggerUtil.java", "build.gradle", "pom.xml"}
         
         for f in files:
-            path = f.path
+            # Normalize path to collapse traversals (e.g., src/test/../../build.gradle -> build.gradle or ../build.gradle)
+            path = os.path.normpath(f.path)
             filename = os.path.basename(path)
             
             # Blacklist check
@@ -21,8 +22,8 @@ class SecurityGuardrails:
                 logger.error(f"Guardrail Violation: Attempted to generate blacklisted file - {path}", job_id=job_id)
                 return False
                 
-            if ".." in path or path.startswith("/"):
-                logger.error(f"Guardrail Violation: Path traversal detected - {path}", job_id=job_id)
+            if ".." in path or path.startswith("/") or os.path.isabs(path):
+                logger.error(f"Guardrail Violation: Path traversal/absolute path detected - {path}", job_id=job_id)
                 return False
             
             # Strict directory enforcement

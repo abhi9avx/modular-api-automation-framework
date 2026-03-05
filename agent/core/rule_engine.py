@@ -1,6 +1,7 @@
 import os
 import time
 import yaml
+import re
 from agent.utils.logger import get_logger
 from agent.core.state_manager import StateManager, JobState
 from agent.providers.gemini_generator import GeminiGenerator
@@ -8,6 +9,7 @@ from agent.core.git_manager import GitManager
 from agent.worker.docker_runner import DockerRunner
 from agent.core.healing_strategy import AdaptiveHealingStrategy
 from agent.core.guardrails import SecurityGuardrails
+from healer.providers.telegram import TelegramManager
 
 logger = get_logger("RuleEngine")
 
@@ -28,7 +30,8 @@ class RuleEngine:
             trigger_data = yaml.safe_load(f)
 
         api_name = trigger_data.get("api_name", "unknown")
-        branch_name = f"feature/{api_name}-{job_id[:8]}"
+        safe_api_name = re.sub(r'[^a-zA-Z0-9-]', '-', api_name.lower())
+        branch_name = f"feature/{safe_api_name}-{job_id}"
         
         # 1. Generate Initial Code
         prompt = f"{self.system_prompt}\n\nORIGINAL REQUEST YAML:\n{yaml.dump(trigger_data)}"
@@ -89,6 +92,12 @@ class RuleEngine:
                 pr_link = git.commit_and_push(branch_name, f"🤖 Automated API generation for {api_name}", job_id)
                 if pr_link:
                     self.state_manager.update_state(job_id, JobState.PR_CREATED, pr_link=pr_link)
+                    try:
+                        telegram = TelegramManager()
+                        telegram.send_message(f"🚀 *API Automation Success*\n\nI have successfully generated the API tests and created a Pull Request.\n\n🔗 *PR Link*: {pr_link}")
+                        logger.info("Sent Telegram notification successfully.", job_id=job_id)
+                    except Exception as e:
+                        logger.error(f"Failed to send Telegram notification: {e}", job_id=job_id)
                 else:
                     self.state_manager.update_state(job_id, JobState.FAILED, error_message="PR creation failed")
             else:
