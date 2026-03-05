@@ -8,6 +8,7 @@ from agent.core.git_manager import GitManager
 from agent.worker.docker_runner import DockerRunner
 from agent.core.healing_strategy import AdaptiveHealingStrategy
 from agent.core.guardrails import SecurityGuardrails
+from healer.providers.telegram import TelegramManager
 
 logger = get_logger("RuleEngine")
 
@@ -84,14 +85,23 @@ class RuleEngine:
                 else:
                     break
 
-        if success:
-            if not is_dryrun:
-                pr_link = git.commit_and_push(branch_name, f"🤖 Automated API generation for {api_name}", job_id)
-                if pr_link:
-                    self.state_manager.update_state(job_id, JobState.PR_CREATED, pr_link=pr_link)
-                else:
-                    self.state_manager.update_state(job_id, JobState.FAILED, error_message="PR creation failed")
+        if not is_dryrun:
+            status_emoji = "✅" if success else "⚠️"
+            status_msg = "passed" if success else "failed"
+            commit_msg = f"🤖 Automated API generation for {api_name} ({status_msg})"
+            pr_link = git.commit_and_push(branch_name, commit_msg, job_id)
+            if pr_link:
+                self.state_manager.update_state(job_id, JobState.PR_CREATED, pr_link=pr_link)
+                try:
+                    telegram = TelegramManager()
+                    telegram.send_message(f"{status_emoji} *API Automation Finished*\n\nValidation {'Succeeded' if success else 'Failed'}.\nI have pushed the changes anyway!\n\n🔗 *PR Link*: {pr_link}")
+                    logger.info("Sent Telegram notification successfully.", job_id=job_id)
+                except Exception as e:
+                    logger.error(f"Failed to send Telegram notification: {e}", job_id=job_id)
             else:
-                logger.info("Dry run successful, skipping commit/push.", job_id=job_id)
+                self.state_manager.update_state(job_id, JobState.FAILED, error_message="PR creation failed")
         else:
-            self.state_manager.update_state(job_id, JobState.FAILED, error_message="Validation loop exhausted")
+            logger.info("Dry run successful, skipping commit/push.", job_id=job_id)
+
+        if not success:
+            logger.warning("Validation failed, but PR was pushed anyway.", job_id=job_id)
