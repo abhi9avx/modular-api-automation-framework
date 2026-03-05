@@ -1,5 +1,6 @@
 import subprocess
 import os
+from typing import Optional
 from agent.utils.logger import get_logger
 
 logger = get_logger("GitManager")
