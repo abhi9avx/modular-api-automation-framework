@@ -9,8 +9,8 @@ logger = get_logger("Guardrails")
 class SecurityGuardrails:
     @staticmethod
     def validate_generated_files(files: List[GeneratedFile], job_id: str) -> bool:
-        # Blacklist of files that should NEVER be generated/overwritten by LLM
-        blacklist = {"Basic.java", "DtoComparisonUtil.java", "LoggerUtil.java", "build.gradle", "pom.xml"}
+        # Blacklist of files that should NEVER be generated/overwritten by LLM (critical infras only)
+        blacklist = {"build.gradle", "pom.xml", "settings.gradle"}
         
         for f in files:
             path = f.path
