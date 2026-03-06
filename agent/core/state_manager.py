@@ -39,9 +39,9 @@ class StateManager:
     def create_job(self, job_id: str, raw_message: str):
         now = datetime.now()
         with sqlite3.connect(self.db_path) as conn:
-            conn.execute("INSERT INTO jobs (job_id, status, raw_message, created_at, updated_at) VALUES (?, ?, ?, ?, ?)",
+            conn.execute("INSERT OR IGNORE INTO jobs (job_id, status, raw_message, created_at, updated_at) VALUES (?, ?, ?, ?, ?)",
                          (job_id, JobState.CREATED.value, raw_message, now, now))
-        logger.info(f"Job created.", job_id=job_id)
+        logger.info(f"Job created (or ignored if duplicate).", job_id=job_id)
 
     def update_state(self, job_id: str, status: JobState, trigger_path: str = None, pr_link: str = None, error_message: str = None):
         now = datetime.now()
