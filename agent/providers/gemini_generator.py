@@ -1,17 +1,18 @@
-import os
 from typing import List, Optional
 from pydantic import BaseModel
 import google.generativeai as genai
 from agent.utils.logger import get_logger
 from agent.utils.json_utils import extract_json
 from agent.config import settings
-from dataclasses import dataclass
 
 logger = get_logger("GeminiGenerator")
 
-@dataclass
-class GenerationResponse:
-    files: List[dict]
+class GeneratedFile(BaseModel):
+    path: str
+    content: str
+
+class GenerationResponse(BaseModel):
+    files: List[GeneratedFile]
 
 class GeminiGenerator:
     def __init__(self, model_name="gemini-2.0-flash"):
