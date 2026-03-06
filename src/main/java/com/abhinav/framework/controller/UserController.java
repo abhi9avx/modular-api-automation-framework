@@ -14,26 +14,14 @@ public class UserController {
     private static final String BASE_URL = "https://reqres.in";
 
     private static RequestSpecification getRequestSpec() {
-        return new RequestSpecBuilder()
-                .setBaseUri(BASE_URL)
-                .setContentType(ContentType.JSON)
-                .build();
+        return new RequestSpecBuilder().setBaseUri(BASE_URL).setContentType(ContentType.JSON).build();
     }
 
     private static ResponseSpecification getResponseSpec() {
-        return new ResponseSpecBuilder()
-                .expectContentType(ContentType.JSON)
-                .build();
+        return new ResponseSpecBuilder().expectContentType(ContentType.JSON).build();
     }
 
     public static Response createUser(CreateUserRequest requestBody) {
-        return RestAssured.given()
-                .spec(getRequestSpec())
-                .body(requestBody)
-                .when()
-                .post("/api/users")
-                .then()
-                .spec(getResponseSpec())
-                .extract().response();
+        return RestAssured.given().spec(getRequestSpec()).body(requestBody).when().post("/api/users").then().spec(getResponseSpec()).extract().response();
     }
 }
