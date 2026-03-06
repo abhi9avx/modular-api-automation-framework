@@ -13,6 +13,11 @@ class GitManager:
         logger.info(f"Preparing branch: {branch_name}", job_id=job_id)
         subprocess.run(["git", "checkout", "main"], cwd=self.repo_path)
         subprocess.run(["git", "pull", "origin", "main"], cwd=self.repo_path)
+        
+        # Clean the working tree to avoid committing local garbage or deletions
+        subprocess.run(["git", "reset", "--hard", "HEAD"], cwd=self.repo_path)
+        subprocess.run(["git", "clean", "-fd"], cwd=self.repo_path)
+        
         # Use -B to overwrite branch if it exists locally
         subprocess.run(["git", "checkout", "-B", branch_name], cwd=self.repo_path)
 
