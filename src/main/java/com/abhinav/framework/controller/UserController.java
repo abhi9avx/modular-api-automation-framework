@@ -1,36 +1,39 @@
 package com.abhinav.framework.controller;
 
-import com.abhinav.framework.client.ApiClient;
-import com.abhinav.framework.config.EnvironmentConfig;
+import com.abhinav.framework.dto.CreateUserRequest;
+import com.abhinav.framework.dto.CreateUserResponse;
+import io.restassured.RestAssured;
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.builder.ResponseSpecBuilder;
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import java.util.Map;
+import io.restassured.specification.RequestSpecification;
+import io.restassured.specification.ResponseSpecification;
 
-/*
- * -----------------------------------------------------------------------------
- * File: UserController.java
- * Purpose: Business Logic Layer for User API.
- * Acts as a bridge between Tests and the ApiClient.
- *
- * Why:
- * - Tests should not know *how* a request is sent (HTTP client details).
- * - Tests just want "Create User" or "Get User".
- *
- * Pros:
- * - Modular: If the endpoint URL changes, we fix it here, not in 50 tests.
- * - Simple: Constructs specific URLs and payloads before handing off to ApiClient.
- * -----------------------------------------------------------------------------
- */
 public class UserController {
+    private static final String BASE_URL = "https://reqres.in";
 
-  // Constructs the URL for a specific user and calls the generic GET method
-  public Response getUserById(int userId) {
-    String url = EnvironmentConfig.getBaseUrl() + "/users/" + userId;
-    return ApiClient.get(url, Map.of());
-  }
+    private static RequestSpecification getRequestSpec() {
+        return new RequestSpecBuilder()
+                .setBaseUri(BASE_URL)
+                .setContentType(ContentType.JSON)
+                .build();
+    }
 
-  // Constructs URL for creating a user and calls the generic POST method
-  public Response createUser(Object userRequest) {
-    String url = EnvironmentConfig.getBaseUrl() + "/users";
-    return ApiClient.post(url, userRequest, Map.of("Content-Type", "application/json"));
-  }
+    private static ResponseSpecification getResponseSpec() {
+        return new ResponseSpecBuilder()
+                .expectContentType(ContentType.JSON)
+                .build();
+    }
+
+    public static Response createUser(CreateUserRequest requestBody) {
+        return RestAssured.given()
+                .spec(getRequestSpec())
+                .body(requestBody)
+                .when()
+                .post("/api/users")
+                .then()
+                .spec(getResponseSpec())
+                .extract().response();
+    }
 }

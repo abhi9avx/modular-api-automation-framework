@@ -1,8 +1,6 @@
 import os
-import time
-import threading
-from fastapi import FastAPI, Request, BackgroundTasks
-from dotenv import load_dotenv
+from fastapi import FastAPI, Request
+from agent.config import settings
 from agent.utils.logger import get_logger
 from agent.core.state_manager import StateManager, JobState
 from agent.core.job_queue import JobQueue
@@ -11,7 +9,6 @@ from agent.parser.curl_parser import CurlParser
 from agent.core.yaml_generator import YamlGenerator
 from agent.core.rule_engine import RuleEngine
 
-load_dotenv()
 app = FastAPI()
 logger = get_logger("Webhook")
 state_manager = StateManager()
@@ -19,7 +16,7 @@ job_queue = JobQueue()
 parser = CurlParser()
 yaml_gen = YamlGenerator()
 
-ALLOWED_USERS = os.getenv("ALLOWED_TELEGRAM_USERS", "").split(",")
+ALLOWED_USERS = settings.ALLOWED_TELEGRAM_USERS
 
 def agent_worker(job_data: dict):
     job_id = job_data["job_id"]

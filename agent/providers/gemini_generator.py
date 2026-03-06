@@ -4,22 +4,21 @@ from pydantic import BaseModel
 import google.generativeai as genai
 from agent.utils.logger import get_logger
 from agent.utils.json_utils import extract_json
+from agent.config import settings
+from dataclasses import dataclass
 
 logger = get_logger("GeminiGenerator")
 
-class GeneratedFile(BaseModel):
-    path: str
-    content: str
-
-class GenerationResponse(BaseModel):
-    files: List[GeneratedFile]
+@dataclass
+class GenerationResponse:
+    files: List[dict]
 
 class GeminiGenerator:
-    def __init__(self):
-        api_key = os.getenv("GEMINI_API_KEY")
-        logger.info(f"Using GEMINI_API_KEY starting with: {str(api_key)[:10]}...", job_id="SYSTEM")
+    def __init__(self, model_name="gemini-2.0-flash"):
+        api_key = settings.GEMINI_API_KEY
+        logger.info(f"Using GEMINI_API_KEY starting with: {api_key[:10]}...")
         genai.configure(api_key=api_key)
-        self.model = genai.GenerativeModel('gemini-2.0-flash')
+        self.model = genai.GenerativeModel(model_name)
 
     def generate_code(self, prompt: str, job_id: str) -> Optional[GenerationResponse]:
         logger.info(f"Sending code generation request to gemini-2.0-flash", job_id=job_id)

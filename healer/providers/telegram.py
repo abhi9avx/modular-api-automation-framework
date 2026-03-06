@@ -1,16 +1,9 @@
-import os
-import requests
-
-from dotenv import load_dotenv
-
-load_dotenv()
-load_dotenv(os.path.join(os.path.dirname(__file__), "../../.env"))
-load_dotenv(os.path.join(os.getcwd(), "healer/.env"))
+from agent.config import settings
 
 class TelegramManager:
     def __init__(self, token=None, chat_id=None):
-        self.token = token or os.getenv("TELEGRAM_BOT_TOKEN")
-        self.chat_id = chat_id or os.getenv("TELEGRAM_CHAT_ID")
+        self.token = token or settings.TELEGRAM_BOT_TOKEN
+        self.chat_id = chat_id or settings.TELEGRAM_CHAT_ID
 
     def send_message(self, text):
         if not self.token or not self.chat_id:

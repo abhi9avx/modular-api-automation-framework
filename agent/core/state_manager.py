@@ -47,13 +47,13 @@ class StateManager:
         now = datetime.now()
         with sqlite3.connect(self.db_path) as conn:
             if trigger_path:
-                conn.execute("UPDATE jobs SET status=?, trigger_path=?, updated_at=? WHERE job_id=?", (status.value, trigger_path, now, job_id))
+                conn.execute("UPDATE jobs SET status=?, trigger_path=?, error_message=NULL, updated_at=? WHERE job_id=?", (status.value, trigger_path, now, job_id))
             elif pr_link:
-                conn.execute("UPDATE jobs SET status=?, pr_link=?, updated_at=? WHERE job_id=?", (status.value, pr_link, now, job_id))
+                conn.execute("UPDATE jobs SET status=?, pr_link=?, error_message=NULL, updated_at=? WHERE job_id=?", (status.value, pr_link, now, job_id))
             elif error_message:
                 conn.execute("UPDATE jobs SET status=?, error_message=?, updated_at=? WHERE job_id=?", (status.value, error_message, now, job_id))
             else:
-                conn.execute("UPDATE jobs SET status=?, updated_at=? WHERE job_id=?", (status.value, now, job_id))
+                conn.execute("UPDATE jobs SET status=?, error_message=NULL, updated_at=? WHERE job_id=?", (status.value, now, job_id))
         logger.info(f"State transitioned to {status}", job_id=job_id)
 
     def get_job(self, job_id: str):
