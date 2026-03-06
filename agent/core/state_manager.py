@@ -16,7 +16,7 @@ class JobState(enum.Enum):
     FAILED = "FAILED"
 
 class StateManager:
-    def __init__(self, db_path="/Users/abhinav/Documents/modular-api-automation-framework/agent_state.db"):
+    def __init__(self, db_path="/tmp/agent_state.db"):
         self.db_path = db_path
         self._init_db()
 
