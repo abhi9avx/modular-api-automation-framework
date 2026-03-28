@@ -26,4 +26,13 @@ public class PostResponse {
   private String title;
   private String body;
   private int userId;
+
+  public static PostResponse createExpected() {
+    return PostResponse.builder()
+        .id(101)
+        .title("Hello from curl")
+        .body("This is a free test API")
+        .userId(42)
+        .build();
+  }
 }

@@ -1,6 +1,8 @@
 package com.abhinav.framework.controller;
 
 import com.abhinav.framework.dto.ComplexResponseDto;
+import com.abhinav.framework.dto.HttpBinPostRequestDto;
+import com.abhinav.framework.dto.HttpBinPostResponseDto;
 import com.abhinav.framework.dto.HttpBinResponseDto;
 import com.abhinav.framework.enums.HttpBinApi;
 import io.restassured.RestAssured;
@@ -127,5 +129,15 @@ public class HttpBinController {
                 "httpbin-post-schema.json"))
         .extract()
         .as(HttpBinResponseDto.class);
+  }
+
+  public HttpBinPostResponseDto postHttpBinMessage(HttpBinPostRequestDto payload) {
+    return RestAssured.given()
+        .spec(getRequestSpecForPayload(payload))
+        .post(HttpBinApi.POST.getPath())
+        .then()
+        .spec(getResponseSpec())
+        .extract()
+        .as(HttpBinPostResponseDto.class);
   }
 }
